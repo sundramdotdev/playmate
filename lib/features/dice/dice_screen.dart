@@ -27,16 +27,26 @@ class _DiceScreenState extends ConsumerState<DiceScreen> with SingleTickerProvid
     );
 
     // Shake detection configuration
-    _shakeSubscription = userAccelerometerEventStream().listen((UserAccelerometerEvent event) {
-      final double acceleration = event.x * event.x + event.y * event.y + event.z * event.z;
-      if (acceleration > 200) { // Shake threshold
-        final now = DateTime.now();
-        if (now.difference(_lastShakeTime) > const Duration(milliseconds: 800)) {
-          _lastShakeTime = now;
-          _triggerRoll();
-        }
-      }
-    });
+    try {
+      _shakeSubscription = userAccelerometerEventStream().listen(
+        (UserAccelerometerEvent event) {
+          final double acceleration = event.x * event.x + event.y * event.y + event.z * event.z;
+          if (acceleration > 200) { // Shake threshold
+            final now = DateTime.now();
+            if (now.difference(_lastShakeTime) > const Duration(milliseconds: 800)) {
+              _lastShakeTime = now;
+              _triggerRoll();
+            }
+          }
+        },
+        onError: (error) {
+          debugPrint("Accelerometer unavailable: $error");
+        },
+        cancelOnError: false,
+      );
+    } catch (e) {
+      debugPrint("Accelerometer initialization bypassed: $e");
+    }
   }
 
   void _triggerRoll() {

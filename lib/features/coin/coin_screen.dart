@@ -78,7 +78,7 @@ class _CoinScreenState extends ConsumerState<CoinScreen>
                             return Transform(
                               alignment: Alignment.center,
                               transform: Matrix4.identity()
-                                ..translate(0.0, offsetValue, 0.0)
+                                ..setTranslationRaw(0.0, offsetValue, 0.0)
                                 ..rotateX(rotationValue),
                               child: _buildCoinWidget(
                                 coinState.lastResult,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../about/package_info_provider.dart';
 import '../../services/storage_service.dart';
 import '../../shared/responsive_layout.dart';
 
@@ -64,12 +66,57 @@ class SettingsScreen extends ConsumerWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: AppSpacing.m),
+              Card(
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.info_outline),
+                      title: const Text('About PlayMate'),
+                      subtitle: const Text('Utilities, developer information & version'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => context.push('/about'),
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.privacy_tip_outlined),
+                      title: const Text('Privacy Policy'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => context.push('/privacy'),
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.gavel_outlined),
+                      title: const Text('Terms & Conditions'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => context.push('/terms'),
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.new_releases_outlined),
+                      title: const Text('What\'s New'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => context.push('/changelog'),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: AppSpacing.xl),
-              const Center(
-                child: Text(
-                  'PLAYMATE v1.0.0\nEverything you need for offline games.\nDesigned and Developed by Sundramdotdev',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
+              Center(
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final packageInfoAsync = ref.watch(packageInfoProvider);
+                    final version = packageInfoAsync.when(
+                      data: (info) => 'v${info.version} (Build ${info.buildNumber})',
+                      loading: () => 'v1.0.0',
+                      error: (err, stack) => 'v1.0.0',
+                    );
+                    return Text(
+                      'PLAYMATE $version\nEverything you need for offline games.\nDeveloped by Sundramdotdev',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: theme.colorScheme.secondary, height: 1.5),
+                    );
+                  },
                 ),
               ),
             ],

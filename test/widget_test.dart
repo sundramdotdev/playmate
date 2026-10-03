@@ -10,6 +10,10 @@ void main() {
   setUpAll(() async {
     // Initialize Hive for testing with an in-memory path
     Hive.init('test_hive');
+    await Hive.openBox('settings');
+    await Hive.openBox('matches');
+    await Hive.openBox('achievements');
+    await Hive.openBox('statistics');
   });
 
   tearDownAll(() async {

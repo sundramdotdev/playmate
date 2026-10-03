@@ -19,6 +19,7 @@ class DiceNotifier extends StateNotifier<DiceRollState> {
   }
 
   void _loadHistory() {
+    if (!StorageService.isBoxOpen(StorageService.statsBoxName)) return;
     final box = StorageService.getStatsBox();
     final List<dynamic>? historyRaw = box.get('dice_history');
     if (historyRaw != null) {

@@ -9,6 +9,10 @@ import '../features/spin_wheel/spin_wheel_screen.dart';
 import '../features/tournament/tournament_screen.dart';
 import '../features/timer/timer_screen.dart';
 import '../features/settings/settings_screen.dart';
+import '../features/about/about_screen.dart';
+import '../features/about/privacy_policy_screen.dart';
+import '../features/about/terms_screen.dart';
+import '../features/about/changelog_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -52,6 +56,22 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/about',
+      builder: (context, state) => const AboutScreen(),
+    ),
+    GoRoute(
+      path: '/privacy',
+      builder: (context, state) => const PrivacyPolicyScreen(),
+    ),
+    GoRoute(
+      path: '/terms',
+      builder: (context, state) => const TermsScreen(),
+    ),
+    GoRoute(
+      path: '/changelog',
+      builder: (context, state) => const ChangelogScreen(),
     ),
   ],
 );

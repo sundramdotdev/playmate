@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme.dart';
@@ -9,9 +10,11 @@ import 'services/storage_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Mock/Setup Firebase & Hive local boxes
-  await FirebaseService.initialize();
+  // Fast storage bootstrap for instantaneous frame rendering
   await StorageService.initialize();
+
+  // Asynchronous background telemetry initialization (non-blocking for splash)
+  unawaited(FirebaseService.initialize());
 
   runApp(
     const ProviderScope(

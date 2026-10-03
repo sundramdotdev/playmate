@@ -9,17 +9,20 @@ class StorageService {
   static Future<void> initialize() async {
     await Hive.initFlutter();
     
-    // Open basic boxes
-    await Hive.openBox(settingsBoxName);
-    await Hive.openBox(matchBoxName);
-    await Hive.openBox(achievementsBoxName);
-    await Hive.openBox(statsBoxName);
+    // Open all necessary boxes concurrently to minimize splash startup delay
+    await Future.wait([
+      Hive.openBox(settingsBoxName),
+      Hive.openBox(matchBoxName),
+      Hive.openBox(achievementsBoxName),
+      Hive.openBox(statsBoxName),
+    ]);
   }
 
   static Box getSettingsBox() => Hive.box(settingsBoxName);
   static Box getMatchBox() => Hive.box(matchBoxName);
   static Box getAchievementsBox() => Hive.box(achievementsBoxName);
   static Box getStatsBox() => Hive.box(statsBoxName);
+  static bool isBoxOpen(String name) => Hive.isBoxOpen(name);
 
   // Helper getters/setters for simple state
   static bool isDarkMode() {
