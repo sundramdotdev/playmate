@@ -27,7 +27,7 @@ void main() {
   testWidgets('AboutScreen renders dynamic package info and developer details', (WidgetTester tester) async {
     PackageInfo.setMockInitialValues(
       appName: 'PlayMate',
-      packageName: 'com.example.playmate',
+      packageName: 'com.sundramdotdev.playmate',
       version: '1.0.0',
       buildNumber: '1',
       buildSignature: '',
@@ -39,7 +39,7 @@ void main() {
           packageInfoProvider.overrideWith(
             (ref) => PackageInfo(
               appName: 'PlayMate',
-              packageName: 'com.example.playmate',
+              packageName: 'com.sundramdotdev.playmate',
               version: '1.0.0',
               buildNumber: '1',
               buildSignature: '',

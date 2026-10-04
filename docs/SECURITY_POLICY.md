@@ -19,7 +19,7 @@ We actively provide security patches for the following versions:
 
 ### 1. OS-Level Application Sandboxing
 PlayMate operates entirely within the native sandboxed storage boundaries enforced by Android and iOS:
-- **Android:** App data is written to private internal storage (`/data/data/com.example.playmate/`), preventing access by other installed applications without root privileges.
+- **Android:** App data is written to private internal storage (`/data/data/com.sundramdotdev.playmate/`), preventing access by other installed applications without root privileges.
 - **iOS:** Storage is restricted to the private application container (`Application Support` and `Documents` directory), shielded by iOS hardware encryption.
 
 ### 2. Local Database Security & Hive Encryption

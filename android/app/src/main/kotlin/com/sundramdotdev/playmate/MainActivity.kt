@@ -1,4 +1,4 @@
-package com.example.playmate
+package com.sundramdotdev.playmate
 
 import io.flutter.embedding.android.FlutterActivity
 
