@@ -32,7 +32,7 @@ Create two distinct Firebase projects:
 - `playmate-app-prod` (Official Production release)
 
 ### 2. Configure Android App
-1. Register Android Package: `com.example.playmate` (or custom commercial package e.g. `com.playmate.offline`).
+1. Register Android Package: `com.sundramdotdev.playmate` (or custom commercial package e.g. `com.playmate.offline`).
 2. Add your **SHA-1** and **SHA-256** fingerprint hashes (for debug and production keystores).
 3. Download the generated `google-services.json`.
 4. Place the file at:
@@ -58,7 +58,7 @@ Create two distinct Firebase projects:
    ```
 
 ### 3. Configure iOS App
-1. Register iOS Bundle Identifier: `com.example.playmate` (or `com.playmate.offline`).
+1. Register iOS Bundle Identifier: `com.sundramdotdev.playmate` (or `com.playmate.offline`).
 2. Add your App Store ID and Team ID.
 3. Download `GoogleService-Info.plist`.
 4. Open the Xcode workspace (`ios/Runner.xcworkspace`) and drag `GoogleService-Info.plist` into `Runner/` (ensure *Copy items if needed* is checked).
