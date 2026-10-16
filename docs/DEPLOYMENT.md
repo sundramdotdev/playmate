@@ -95,7 +95,7 @@ build/app/outputs/bundle/release/app-release.aab
 ## 🍎 iOS Deployment Pipeline
 
 ### 1. Apple Developer Portal Setup
-1. Create App Identifier: `com.example.playmate` (or commercial bundle ID `com.playmate.offline`).
+1. Create App Identifier: `com.sundramdotdev.playmate` (matching application bundle ID).
 2. Generate an **Apple Distribution Certificate** in Xcode or Apple Developer Portal.
 3. Create an **App Store Provisioning Profile** tied to the App ID and Certificate.
 

@@ -10,8 +10,8 @@ This document defines the authoritative system configuration, software platform 
 | :--- | :--- | :--- |
 | **Application Name** | **PlayMate** | Official brand identity |
 | **Tagline** | *Everything you need for offline games.* | Global product marketing tagline |
-| **Android Application ID** | `com.example.playmate` | Package namespace registered in Gradle |
-| **iOS Bundle Identifier** | `com.example.playmate` | App bundle ID configured in Xcode |
+| **Android Application ID** | `com.sundramdotdev.playmate` | Package namespace registered in Gradle |
+| **iOS Bundle Identifier** | `com.sundramdotdev.playmate` | App bundle ID configured in Xcode |
 | **Minimum Android Version** | **Android 6.0 (API Level 23)** | Covers $>99.5\%$ of active global Android devices |
 | **Target Android Version** | **Android 14 / 15 (API Level 34/35)**| Complies with Google Play API target requirements |
 | **Minimum iOS Version** | **iOS 14.0** | Compatible with iPhone 6s through current iPhone generation |

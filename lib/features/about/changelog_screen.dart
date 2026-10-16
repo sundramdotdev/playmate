@@ -10,15 +10,31 @@ class ChangelogScreen extends StatelessWidget {
 
     final releases = [
       {
-        'version': 'v1.0.0',
+        'version': 'v1.1.0',
         'date': 'October 2026',
         'isLatest': true,
+        'highlights': [
+          'High-precision monotonic Game Timer Suite with zero-drift accuracy.',
+          'Full-featured Chess Clock with Fischer increment time controls (+X seconds per move).',
+          'Lap & split recording in Stopwatch mode with fastest and slowest lap callouts.',
+          'Custom 3D Tabletop Dice physics with realistic lighting and tumble animation.',
+          'Bespoke 3D Coin Toss with dual-sided PlayMate minted faces and edge thickness.',
+          'Tactile Spin Wheel with dynamic friction, ticker sound, and elimination mode.',
+          'Centralized developer links & verified contact destinations.',
+          'Performance optimizations, zero layout overflows across 320px–1024px screens.',
+        ],
+      },
+      {
+        'version': 'v1.0.0',
+        'date': 'October 2026',
+        'isLatest': false,
         'highlights': [
           'Full suite of 8 offline gaming tools.',
           'Polyhedral Dice Roller (D4, D6, D8, D10, D12, D20) with shake-to-roll physics.',
           '3D Coin Toss with multi-coin flipping and streak tracking.',
           'Smart Team Generator with random and skill-balanced modes.',
           'Universal Score Tracker with round-by-round history and undo.',
+          
           'Gully & Club Cricket Scorer with legal delivery counting and run rate.',
           'Custom Spin Wheel with angular velocity physics and elimination mode.',
           'Tournament Generator for 4 to 32 team elimination brackets.',

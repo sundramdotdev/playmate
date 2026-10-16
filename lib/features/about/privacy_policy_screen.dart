@@ -79,7 +79,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   theme: theme,
                   title: '8. Contact Information',
                   body:
-                      'For privacy inquiries, questions, or feedback, you can contact the developer at:\nsupport@playmateapp.com\nhttps://github.com/sundramdotdev',
+                      'For privacy inquiries, technical questions, or feature requests, contact:\n'
+                      'Developer: Sundramdotdev\n'
+                      'Website: https://www.sundramdotdev.xyz\n'
+                      'GitHub: https://github.com/sundramdotdev/playmate',
                 ),
                 const SizedBox(height: AppSpacing.xl),
               ],
