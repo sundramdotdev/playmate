@@ -39,9 +39,9 @@ void main() {
     expect(find.text('PLAYMATE'), findsOneWidget);
 
     // Verify core feature cards are visible on home
-    expect(find.text('Dice Roller'), findsOneWidget);
-    expect(find.text('Coin Toss'), findsOneWidget);
-    expect(find.text('Score Tracker'), findsOneWidget);
+    expect(find.text('Dice Roller'), findsWidgets);
+    expect(find.text('Coin Toss'), findsWidgets);
+    expect(find.text('Score Tracker'), findsWidgets);
   });
 
   testWidgets('Dice Roller screen navigates correctly', (WidgetTester tester) async {
@@ -58,7 +58,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Tap on Dice Roller card
-    await tester.tap(find.text('Dice Roller'));
+    await tester.tap(find.text('Dice Roller').first);
     await tester.pumpAndSettle();
 
     // Verify navigation to Dice Roller

@@ -56,11 +56,37 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                       subtitle: const Text('Deletes all local matches and dice histories'),
                       onTap: () async {
-                        final messenger = ScaffoldMessenger.of(context);
-                        await StorageService.clearAllData();
-                        messenger.showSnackBar(
-                          const SnackBar(content: Text('All data cleared successfully!')),
+                        final confirmed = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text('Clear Match History?'),
+                            content: const Text(
+                              'This will permanently delete all stored local matches, rolls, and tournament data. This action cannot be undone.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx, false),
+                                child: const Text('CANCEL'),
+                              ),
+                              FilledButton(
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: theme.colorScheme.error,
+                                  foregroundColor: theme.colorScheme.onError,
+                                ),
+                                onPressed: () => Navigator.pop(ctx, true),
+                                child: const Text('CLEAR ALL'),
+                              ),
+                            ],
+                          ),
                         );
+
+                        if (confirmed == true && context.mounted) {
+                          final messenger = ScaffoldMessenger.of(context);
+                          await StorageService.clearAllData();
+                          messenger.showSnackBar(
+                            const SnackBar(content: Text('All data cleared successfully!')),
+                          );
+                        }
                       },
                     ),
                   ],

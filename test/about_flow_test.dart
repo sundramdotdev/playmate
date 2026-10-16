@@ -58,12 +58,14 @@ void main() {
     expect(find.text('PlayMate'), findsWidgets);
     expect(find.text('Everything you need for offline games.'), findsOneWidget);
     expect(find.text('Sundramdotdev'), findsOneWidget);
+    expect(find.text('Official Website'), findsOneWidget);
     expect(find.text('GitHub'), findsOneWidget);
     expect(find.text('LinkedIn'), findsOneWidget);
+    expect(find.text('PlayMate Repository'), findsOneWidget);
     expect(find.text('Instagram'), findsOneWidget);
     expect(find.text('Privacy Policy'), findsOneWidget);
     expect(find.text('Terms & Conditions'), findsOneWidget);
-    expect(find.text('What\'s New'), findsOneWidget);
+    expect(find.text('What\'s New in 1.1.0'), findsOneWidget);
   });
 
   testWidgets('PrivacyPolicyScreen renders and scrolls without error', (WidgetTester tester) async {
