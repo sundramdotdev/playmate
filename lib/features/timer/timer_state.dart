@@ -163,8 +163,10 @@ class TimerState {
     return TimerState(
       mode: mode ?? this.mode,
       isRunning: isRunning ?? this.isRunning,
-      countdownRemaining: countdownRemaining ?? remaining ?? this.countdownRemaining,
-      countdownInitial: countdownInitial ?? initialDuration ?? this.countdownInitial,
+      countdownRemaining:
+          countdownRemaining ?? remaining ?? this.countdownRemaining,
+      countdownInitial:
+          countdownInitial ?? initialDuration ?? this.countdownInitial,
       countdownFinished: countdownFinished ?? this.countdownFinished,
       roundConfig: roundConfig ?? this.roundConfig,
       currentRound: currentRound ?? this.currentRound,
@@ -179,8 +181,10 @@ class TimerState {
       turnRemaining: turnRemaining ?? this.turnRemaining,
       currentTurnRound: currentTurnRound ?? this.currentTurnRound,
       turnExpired: turnExpired ?? this.turnExpired,
-      chessPlayerARemaining: chessPlayerARemaining ?? this.chessPlayerARemaining,
-      chessPlayerBRemaining: chessPlayerBRemaining ?? this.chessPlayerBRemaining,
+      chessPlayerARemaining:
+          chessPlayerARemaining ?? this.chessPlayerARemaining,
+      chessPlayerBRemaining:
+          chessPlayerBRemaining ?? this.chessPlayerBRemaining,
       chessBaseTime: chessBaseTime ?? this.chessBaseTime,
       chessIncrement: chessIncrement ?? this.chessIncrement,
       isPlayerATurn: isPlayerATurn ?? this.isPlayerATurn,

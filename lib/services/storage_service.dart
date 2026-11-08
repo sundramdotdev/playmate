@@ -8,7 +8,7 @@ class StorageService {
 
   static Future<void> initialize() async {
     await Hive.initFlutter();
-    
+
     // Open all necessary boxes concurrently to minimize splash startup delay
     await Future.wait([
       Hive.openBox(settingsBoxName),
@@ -24,7 +24,20 @@ class StorageService {
   static Box getStatsBox() => Hive.box(statsBoxName);
   static bool isBoxOpen(String name) => Hive.isBoxOpen(name);
 
+  static const String hasCompletedOnboardingKey = 'hasCompletedOnboarding';
+
   // Helper getters/setters for simple state
+  static bool hasCompletedOnboarding() {
+    if (!isBoxOpen(settingsBoxName)) return false;
+    return getSettingsBox().get(hasCompletedOnboardingKey, defaultValue: false)
+        as bool;
+  }
+
+  static Future<void> setCompletedOnboarding(bool value) async {
+    if (!isBoxOpen(settingsBoxName)) return;
+    await getSettingsBox().put(hasCompletedOnboardingKey, value);
+  }
+
   static bool isDarkMode() {
     return getSettingsBox().get('dark_mode', defaultValue: false) as bool;
   }

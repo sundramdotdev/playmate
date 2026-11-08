@@ -38,11 +38,8 @@ class TournamentState {
 }
 
 class TournamentNotifier extends StateNotifier<TournamentState> {
-  TournamentNotifier() : super(TournamentState(
-    teams: [],
-    rounds: [],
-    isGenerated: false,
-  ));
+  TournamentNotifier()
+    : super(TournamentState(teams: [], rounds: [], isGenerated: false));
 
   void addTeam(String name) {
     final cleaned = name.trim();
@@ -61,7 +58,12 @@ class TournamentNotifier extends StateNotifier<TournamentState> {
 
   void generateBrackets() {
     final teamCount = state.teams.length;
-    if (teamCount != 4 && teamCount != 8 && teamCount != 16 && teamCount != 32) return;
+    if (teamCount != 4 &&
+        teamCount != 8 &&
+        teamCount != 16 &&
+        teamCount != 32) {
+      return;
+    }
 
     final shuffled = List<String>.from(state.teams)..shuffle();
     final List<TournamentRound> rounds = [];
@@ -72,26 +74,26 @@ class TournamentNotifier extends StateNotifier<TournamentState> {
       round1Matches.add('${shuffled[i]} vs ${shuffled[i + 1]}');
     }
 
-    rounds.add(TournamentRound(
-      matches: round1Matches,
-      winners: List.filled(round1Matches.length, ''),
-    ));
+    rounds.add(
+      TournamentRound(
+        matches: round1Matches,
+        winners: List.filled(round1Matches.length, ''),
+      ),
+    );
 
     // Fill remaining rounds with empty placeholders
     int nextRoundMatchesCount = round1Matches.length ~/ 2;
     while (nextRoundMatchesCount > 0) {
-      rounds.add(TournamentRound(
-        matches: List.filled(nextRoundMatchesCount, 'TBD vs TBD'),
-        winners: List.filled(nextRoundMatchesCount, ''),
-      ));
+      rounds.add(
+        TournamentRound(
+          matches: List.filled(nextRoundMatchesCount, 'TBD vs TBD'),
+          winners: List.filled(nextRoundMatchesCount, ''),
+        ),
+      );
       nextRoundMatchesCount ~/= 2;
     }
 
-    state = state.copyWith(
-      rounds: rounds,
-      isGenerated: true,
-      champion: null,
-    );
+    state = state.copyWith(rounds: rounds, isGenerated: true, champion: null);
 
     AnalyticsService.trackTournamentCreated(teamCount);
   }
@@ -125,7 +127,8 @@ class TournamentNotifier extends StateNotifier<TournamentState> {
 
     if (matchIndex % 2 == 0) {
       // First slot in next match
-      nextMatches[nextMatchIndex] = '$winner vs ${teamsInNextMatch.length > 1 ? teamsInNextMatch[1] : 'TBD'}';
+      nextMatches[nextMatchIndex] =
+          '$winner vs ${teamsInNextMatch.length > 1 ? teamsInNextMatch[1] : 'TBD'}';
     } else {
       // Second slot in next match
       nextMatches[nextMatchIndex] = '${teamsInNextMatch[0]} vs $winner';
@@ -141,7 +144,8 @@ class TournamentNotifier extends StateNotifier<TournamentState> {
 
   Future<void> _saveTournament(String champion) async {
     final box = StorageService.getMatchBox();
-    final List<dynamic> history = box.get('tournament_matches', defaultValue: []) as List<dynamic>;
+    final List<dynamic> history =
+        box.get('tournament_matches', defaultValue: []) as List<dynamic>;
 
     final match = {
       'date': DateTime.now().toIso8601String(),
@@ -163,6 +167,7 @@ class TournamentNotifier extends StateNotifier<TournamentState> {
   }
 }
 
-final tournamentProvider = StateNotifierProvider<TournamentNotifier, TournamentState>((ref) {
-  return TournamentNotifier();
-});
+final tournamentProvider =
+    StateNotifierProvider<TournamentNotifier, TournamentState>((ref) {
+      return TournamentNotifier();
+    });

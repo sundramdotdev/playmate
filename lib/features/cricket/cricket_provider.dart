@@ -57,7 +57,9 @@ class CricketNotifier extends StateNotifier<CricketMatchState?> {
       maxOvers: overs,
       target: target,
       isInningsCompleted: false,
-      statusMessage: target == null ? '1st Innings: Batting' : '2nd Innings: Chasing $target',
+      statusMessage: target == null
+          ? '1st Innings: Batting'
+          : '2nd Innings: Chasing $target',
     );
     AnalyticsService.trackCricketMatchCreated();
   }
@@ -66,7 +68,8 @@ class CricketNotifier extends StateNotifier<CricketMatchState?> {
     if (state == null || state!.isInningsCompleted) return;
 
     final newRuns = state!.runs + runsToAdd;
-    final newBalls = state!.balls + 1; // Standard delivery increments ball count
+    final newBalls =
+        state!.balls + 1; // Standard delivery increments ball count
 
     _checkMatchProgress(newRuns, state!.wickets, newBalls);
   }
@@ -105,7 +108,8 @@ class CricketNotifier extends StateNotifier<CricketMatchState?> {
         status = 'Match Lost! Target not reached.';
         _saveToHistory(runs, wickets, balls, false);
       } else {
-        status = 'Chasing ${state!.target!}: Need ${state!.target! - runs} runs from ${maxBalls - balls} balls';
+        status =
+            'Chasing ${state!.target!}: Need ${state!.target! - runs} runs from ${maxBalls - balls} balls';
       }
     } else {
       // 1st innings logic
@@ -113,7 +117,8 @@ class CricketNotifier extends StateNotifier<CricketMatchState?> {
         isCompleted = true;
         status = '1st Innings Over! Target: ${runs + 1}';
       } else {
-        status = '1st Innings: Batting. Overs remaining: ${((maxBalls - balls) / 6).toStringAsFixed(1)}';
+        status =
+            '1st Innings: Batting. Overs remaining: ${((maxBalls - balls) / 6).toStringAsFixed(1)}';
       }
     }
 
@@ -126,10 +131,16 @@ class CricketNotifier extends StateNotifier<CricketMatchState?> {
     );
   }
 
-  Future<void> _saveToHistory(int runs, int wickets, int balls, bool won) async {
+  Future<void> _saveToHistory(
+    int runs,
+    int wickets,
+    int balls,
+    bool won,
+  ) async {
     final box = StorageService.getMatchBox();
-    final List<dynamic> history = box.get('cricket_matches', defaultValue: []) as List<dynamic>;
-    
+    final List<dynamic> history =
+        box.get('cricket_matches', defaultValue: []) as List<dynamic>;
+
     final match = {
       'date': DateTime.now().toIso8601String(),
       'type': 'Cricket Scorer',
@@ -148,6 +159,7 @@ class CricketNotifier extends StateNotifier<CricketMatchState?> {
   }
 }
 
-final cricketProvider = StateNotifierProvider<CricketNotifier, CricketMatchState?>((ref) {
-  return CricketNotifier();
-});
+final cricketProvider =
+    StateNotifierProvider<CricketNotifier, CricketMatchState?>((ref) {
+      return CricketNotifier();
+    });

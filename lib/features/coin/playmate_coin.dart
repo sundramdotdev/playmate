@@ -40,7 +40,8 @@ class PlayMateCoin extends StatefulWidget {
   State<PlayMateCoin> createState() => _PlayMateCoinState();
 }
 
-class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMixin {
+class _PlayMateCoinState extends State<PlayMateCoin>
+    with TickerProviderStateMixin {
   late AnimationController _flipController;
   late AnimationController _idleController;
   late AnimationController _pressController;
@@ -76,7 +77,8 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
     );
 
     // Only loop idle animation in production to prevent pumpAndSettle test timeouts
-    final isTesting = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
+    final isTesting =
+        !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
     if (!isTesting) {
       _idleController.repeat();
     }
@@ -98,7 +100,9 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
   void didUpdateWidget(covariant PlayMateCoin oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.side != oldWidget.side && !widget.isFlipping && !_flipController.isAnimating) {
+    if (widget.side != oldWidget.side &&
+        !widget.isFlipping &&
+        !_flipController.isAnimating) {
       setState(() {
         _currentRx = CoinOrientation.getBaseAngleForSide(widget.side);
         _fromRx = _currentRx;
@@ -106,7 +110,9 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
       });
     }
 
-    if (widget.isFlipping && !oldWidget.isFlipping && !_flipController.isAnimating) {
+    if (widget.isFlipping &&
+        !oldWidget.isFlipping &&
+        !_flipController.isAnimating) {
       _startFlipSequence();
     }
   }
@@ -173,7 +179,8 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
       return -0.01 * CoinMotionConfig.anticipationCurve.transform(subT);
     } else {
       // Fast acceleration into smooth natural deceleration
-      final subT = (t - CoinMotionConfig.anticipationEnd) /
+      final subT =
+          (t - CoinMotionConfig.anticipationEnd) /
           (1.0 - CoinMotionConfig.anticipationEnd);
       return Curves.easeOutCubic.transform(subT.clamp(0.0, 1.0));
     }
@@ -221,7 +228,8 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final reducedMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reducedMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
 
     return Semantics(
       label: widget.isFlipping
@@ -234,7 +242,11 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
         onTapUp: _onTapUp,
         onTapCancel: _onTapCancel,
         child: AnimatedBuilder(
-          animation: Listenable.merge([_flipController, _idleController, _pressController]),
+          animation: Listenable.merge([
+            _flipController,
+            _idleController,
+            _pressController,
+          ]),
           builder: (context, _) {
             final double flipT = _flipController.value;
             final double pressT = _pressController.value;
@@ -246,21 +258,31 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
                 final subT = flipT / CoinMotionConfig.anticipationEnd;
                 scale = 1.0 - (subT * (1.0 - CoinMotionConfig.pressScale));
               } else if (flipT < CoinMotionConfig.launchEnd) {
-                final subT = (flipT - CoinMotionConfig.anticipationEnd) /
-                    (CoinMotionConfig.launchEnd - CoinMotionConfig.anticipationEnd);
-                scale = CoinMotionConfig.pressScale +
-                    subT * (CoinMotionConfig.launchScale - CoinMotionConfig.pressScale);
+                final subT =
+                    (flipT - CoinMotionConfig.anticipationEnd) /
+                    (CoinMotionConfig.launchEnd -
+                        CoinMotionConfig.anticipationEnd);
+                scale =
+                    CoinMotionConfig.pressScale +
+                    subT *
+                        (CoinMotionConfig.launchScale -
+                            CoinMotionConfig.pressScale);
               } else if (flipT < CoinMotionConfig.flipEnd) {
-                final subT = (flipT - CoinMotionConfig.launchEnd) /
+                final subT =
+                    (flipT - CoinMotionConfig.launchEnd) /
                     (CoinMotionConfig.flipEnd - CoinMotionConfig.launchEnd);
-                scale = CoinMotionConfig.launchScale - subT * (CoinMotionConfig.launchScale - 1.0);
+                scale =
+                    CoinMotionConfig.launchScale -
+                    subT * (CoinMotionConfig.launchScale - 1.0);
               } else if (flipT < CoinMotionConfig.landingEnd) {
-                final subT = (flipT - CoinMotionConfig.flipEnd) /
+                final subT =
+                    (flipT - CoinMotionConfig.flipEnd) /
                     (CoinMotionConfig.landingEnd - CoinMotionConfig.flipEnd);
                 final bouncePhase = math.sin(subT * math.pi * 2);
                 scale = 1.0 + (bouncePhase * 0.025);
               } else {
-                final subT = (flipT - CoinMotionConfig.landingEnd) /
+                final subT =
+                    (flipT - CoinMotionConfig.landingEnd) /
                     (CoinMotionConfig.settleEnd - CoinMotionConfig.landingEnd);
                 final settlePhase = math.sin(subT * math.pi * 2);
                 scale = 1.0 + (settlePhase * 0.008);
@@ -271,26 +293,37 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
             double translateY = pressT * CoinMotionConfig.pressTranslateY;
             if (!reducedMotion && _flipController.isAnimating) {
               if (flipT < CoinMotionConfig.anticipationEnd) {
-                translateY = CoinMotionConfig.pressTranslateY * (flipT / CoinMotionConfig.anticipationEnd);
+                translateY =
+                    CoinMotionConfig.pressTranslateY *
+                    (flipT / CoinMotionConfig.anticipationEnd);
               } else if (flipT < CoinMotionConfig.launchEnd) {
-                final subT = (flipT - CoinMotionConfig.anticipationEnd) /
-                    (CoinMotionConfig.launchEnd - CoinMotionConfig.anticipationEnd);
-                translateY = CoinMotionConfig.pressTranslateY +
+                final subT =
+                    (flipT - CoinMotionConfig.anticipationEnd) /
+                    (CoinMotionConfig.launchEnd -
+                        CoinMotionConfig.anticipationEnd);
+                translateY =
+                    CoinMotionConfig.pressTranslateY +
                     Curves.easeOutQuad.transform(subT) *
-                        (CoinMotionConfig.launchPeakElevationY - CoinMotionConfig.pressTranslateY);
+                        (CoinMotionConfig.launchPeakElevationY -
+                            CoinMotionConfig.pressTranslateY);
               } else if (flipT < CoinMotionConfig.flipEnd) {
-                final subT = (flipT - CoinMotionConfig.launchEnd) /
+                final subT =
+                    (flipT - CoinMotionConfig.launchEnd) /
                     (CoinMotionConfig.flipEnd - CoinMotionConfig.launchEnd);
-                translateY = CoinMotionConfig.launchPeakElevationY *
+                translateY =
+                    CoinMotionConfig.launchPeakElevationY *
                     (1.0 - Curves.easeInQuad.transform(subT));
               } else if (flipT < CoinMotionConfig.landingEnd) {
-                final subT = (flipT - CoinMotionConfig.flipEnd) /
+                final subT =
+                    (flipT - CoinMotionConfig.flipEnd) /
                     (CoinMotionConfig.landingEnd - CoinMotionConfig.flipEnd);
                 translateY = -4.0 * math.sin(subT * math.pi);
               } else {
                 translateY = 0.0;
               }
-            } else if (!reducedMotion && !_flipController.isAnimating && pressT == 0) {
+            } else if (!reducedMotion &&
+                !_flipController.isAnimating &&
+                pressT == 0) {
               // Idle subtle breathing drift (~1.5px)
               final idlePhase = math.sin(_idleController.value * math.pi * 2);
               translateY = -1.5 * idlePhase;
@@ -304,27 +337,50 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
 
             if (!reducedMotion && _flipController.isAnimating) {
               if (flipT < CoinMotionConfig.launchEnd) {
-                final subT = (flipT / CoinMotionConfig.launchEnd).clamp(0.0, 1.0);
-                shadowScale = CoinMotionConfig.shadowIdleScale +
-                    subT * (CoinMotionConfig.shadowLaunchScale - CoinMotionConfig.shadowIdleScale);
-                shadowOpacity = shadowOpacity +
-                    subT * (CoinMotionConfig.shadowLaunchOpacity - shadowOpacity);
+                final subT = (flipT / CoinMotionConfig.launchEnd).clamp(
+                  0.0,
+                  1.0,
+                );
+                shadowScale =
+                    CoinMotionConfig.shadowIdleScale +
+                    subT *
+                        (CoinMotionConfig.shadowLaunchScale -
+                            CoinMotionConfig.shadowIdleScale);
+                shadowOpacity =
+                    shadowOpacity +
+                    subT *
+                        (CoinMotionConfig.shadowLaunchOpacity - shadowOpacity);
               } else if (flipT < CoinMotionConfig.flipEnd) {
-                final subT = ((flipT - CoinMotionConfig.launchEnd) /
-                        (CoinMotionConfig.flipEnd - CoinMotionConfig.launchEnd))
-                    .clamp(0.0, 1.0);
-                shadowScale = CoinMotionConfig.shadowLaunchScale +
-                    subT * (CoinMotionConfig.shadowLandingScale - CoinMotionConfig.shadowLaunchScale);
-                shadowOpacity = CoinMotionConfig.shadowLaunchOpacity +
-                    subT * (CoinMotionConfig.shadowLandingOpacity - CoinMotionConfig.shadowLaunchOpacity);
+                final subT =
+                    ((flipT - CoinMotionConfig.launchEnd) /
+                            (CoinMotionConfig.flipEnd -
+                                CoinMotionConfig.launchEnd))
+                        .clamp(0.0, 1.0);
+                shadowScale =
+                    CoinMotionConfig.shadowLaunchScale +
+                    subT *
+                        (CoinMotionConfig.shadowLandingScale -
+                            CoinMotionConfig.shadowLaunchScale);
+                shadowOpacity =
+                    CoinMotionConfig.shadowLaunchOpacity +
+                    subT *
+                        (CoinMotionConfig.shadowLandingOpacity -
+                            CoinMotionConfig.shadowLaunchOpacity);
               } else {
-                final subT = ((flipT - CoinMotionConfig.flipEnd) /
-                        (1.0 - CoinMotionConfig.flipEnd))
-                    .clamp(0.0, 1.0);
-                shadowScale = CoinMotionConfig.shadowLandingScale +
-                    subT * (CoinMotionConfig.shadowIdleScale - CoinMotionConfig.shadowLandingScale);
-                shadowOpacity = CoinMotionConfig.shadowLandingOpacity +
-                    subT * (CoinMotionConfig.shadowIdleOpacity - CoinMotionConfig.shadowLandingOpacity);
+                final subT =
+                    ((flipT - CoinMotionConfig.flipEnd) /
+                            (1.0 - CoinMotionConfig.flipEnd))
+                        .clamp(0.0, 1.0);
+                shadowScale =
+                    CoinMotionConfig.shadowLandingScale +
+                    subT *
+                        (CoinMotionConfig.shadowIdleScale -
+                            CoinMotionConfig.shadowLandingScale);
+                shadowOpacity =
+                    CoinMotionConfig.shadowLandingOpacity +
+                    subT *
+                        (CoinMotionConfig.shadowIdleOpacity -
+                            CoinMotionConfig.shadowLandingOpacity);
               }
             }
 
@@ -333,10 +389,12 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
 
             // Secondary rotations during tumbling
             final double secondaryY = _flipController.isAnimating
-                ? CoinOrientation.restingTiltY + math.sin(flipT * math.pi) * _secondaryDriftY
+                ? CoinOrientation.restingTiltY +
+                      math.sin(flipT * math.pi) * _secondaryDriftY
                 : CoinOrientation.restingTiltY;
             final double secondaryZ = _flipController.isAnimating
-                ? CoinOrientation.restingTiltZ + math.sin(flipT * math.pi * 2) * _secondaryWobbleZ
+                ? CoinOrientation.restingTiltZ +
+                      math.sin(flipT * math.pi * 2) * _secondaryWobbleZ
                 : CoinOrientation.restingTiltZ;
 
             return RepaintBoundary(
@@ -359,7 +417,11 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
                             height: coinSize * 0.24,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(
-                                  Radius.elliptical(coinSize * 0.42, coinSize * 0.12)),
+                                Radius.elliptical(
+                                  coinSize * 0.42,
+                                  coinSize * 0.12,
+                                ),
+                              ),
                               gradient: RadialGradient(
                                 colors: [
                                   Colors.black.withValues(alpha: 0.65),
@@ -416,8 +478,14 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
     final bool isHeadsFacing = cosRx >= 0.0;
 
     // Directional lighting based on orientation relative to light (-0.35, -0.65, -0.67)
-    final double lightFront = (0.78 + (0.22 * math.max(0.0, cosRx))).clamp(0.0, 1.0);
-    final double lightBack = (0.78 + (0.22 * math.max(0.0, -cosRx))).clamp(0.0, 1.0);
+    final double lightFront = (0.78 + (0.22 * math.max(0.0, cosRx))).clamp(
+      0.0,
+      1.0,
+    );
+    final double lightBack = (0.78 + (0.22 * math.max(0.0, -cosRx))).clamp(
+      0.0,
+      1.0,
+    );
 
     // 3D rotation transform for the coin container
     final coinTransform = Matrix4.identity()
@@ -428,7 +496,9 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
 
     // Number of cylindrical edge slices
     const int edgeSliceCount = 8;
-    final edgeColor = isDarkMode ? const Color(0xFF1E1F23) : const Color(0xFF2B2C31);
+    final edgeColor = isDarkMode
+        ? const Color(0xFF1E1F23)
+        : const Color(0xFF2B2C31);
 
     // Edge slices ordered along Z from -halfThickness to +halfThickness
     final List<Widget> children = [];
@@ -476,8 +546,8 @@ class _PlayMateCoinState extends State<PlayMateCoin> with TickerProviderStateMix
 
     // Cylindrical edge slices along Z creating continuous solid cylindrical thickness
     for (int i = 0; i < edgeSliceCount; i++) {
-      final double zSlice = -halfThickness +
-          (thickness * (i + 0.5) / edgeSliceCount);
+      final double zSlice =
+          -halfThickness + (thickness * (i + 0.5) / edgeSliceCount);
 
       children.add(
         Transform(

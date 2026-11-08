@@ -28,7 +28,10 @@ class TimerControls extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.m,
+        vertical: 12,
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         border: Border(
@@ -49,14 +52,21 @@ class TimerControls extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size(0, 50),
                   side: BorderSide(
-                    color: isDark ? const Color(0xFF383838) : const Color(0xFFD0D0D0),
+                    color: isDark
+                        ? const Color(0xFF383838)
+                        : const Color(0xFFD0D0D0),
                   ),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 onPressed: onReset,
                 child: const Text(
                   'RESET',
-                  style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.5),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
                 ),
               ),
             ),
@@ -69,7 +79,9 @@ class TimerControls extends StatelessWidget {
                 child: FilledButton.tonal(
                   style: FilledButton.styleFrom(
                     minimumSize: const Size(0, 50),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   onPressed: isRunning ? onSecondaryAction : null,
                   child: Row(
@@ -84,7 +96,10 @@ class TimerControls extends StatelessWidget {
                           secondaryActionLabel!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ],
@@ -103,7 +118,9 @@ class TimerControls extends StatelessWidget {
                   foregroundColor: theme.colorScheme.onPrimary,
                   minimumSize: const Size(0, 50),
                   elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 onPressed: isRunning ? onPause : onStart,
                 child: Row(
@@ -113,7 +130,10 @@ class TimerControls extends StatelessWidget {
                     const SizedBox(width: 6),
                     Text(
                       isRunning ? 'PAUSE' : 'START',
-                      style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.8),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.8,
+                      ),
                     ),
                   ],
                 ),

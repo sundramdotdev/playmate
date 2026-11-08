@@ -6,17 +6,9 @@ class WheelOption {
   final String label;
   final Color? customColor;
 
-  const WheelOption({
-    required this.id,
-    required this.label,
-    this.customColor,
-  });
+  const WheelOption({required this.id, required this.label, this.customColor});
 
-  WheelOption copyWith({
-    String? id,
-    String? label,
-    Color? customColor,
-  }) {
+  WheelOption copyWith({String? id, String? label, Color? customColor}) {
     return WheelOption(
       id: id ?? this.id,
       label: label ?? this.label,
@@ -25,10 +17,10 @@ class WheelOption {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'label': label,
-        if (customColor != null) 'color': customColor!.toARGB32(),
-      };
+    'id': id,
+    'label': label,
+    if (customColor != null) 'color': customColor!.toARGB32(),
+  };
 
   factory WheelOption.fromJson(Map<String, dynamic> json) {
     return WheelOption(
@@ -105,15 +97,12 @@ class SpinWheelRecord {
   final String winnerLabel;
   final DateTime timestamp;
 
-  const SpinWheelRecord({
-    required this.winnerLabel,
-    required this.timestamp,
-  });
+  const SpinWheelRecord({required this.winnerLabel, required this.timestamp});
 
   Map<String, dynamic> toJson() => {
-        'winner': winnerLabel,
-        'time': timestamp.millisecondsSinceEpoch,
-      };
+    'winner': winnerLabel,
+    'time': timestamp.millisecondsSinceEpoch,
+  };
 
   factory SpinWheelRecord.fromJson(Map<String, dynamic> json) {
     return SpinWheelRecord(
@@ -122,4 +111,3 @@ class SpinWheelRecord {
     );
   }
 }
-

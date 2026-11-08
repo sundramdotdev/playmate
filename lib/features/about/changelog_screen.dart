@@ -10,7 +10,7 @@ class ChangelogScreen extends StatelessWidget {
 
     final releases = [
       {
-        'version': 'v1.1.0',
+        'version': 'v1.0.2',
         'date': 'October 2026',
         'isLatest': true,
         'highlights': [
@@ -34,7 +34,7 @@ class ChangelogScreen extends StatelessWidget {
           '3D Coin Toss with multi-coin flipping and streak tracking.',
           'Smart Team Generator with random and skill-balanced modes.',
           'Universal Score Tracker with round-by-round history and undo.',
-          
+
           'Gully & Club Cricket Scorer with legal delivery counting and run rate.',
           'Custom Spin Wheel with angular velocity physics and elimination mode.',
           'Tournament Generator for 4 to 32 team elimination brackets.',
@@ -76,9 +76,7 @@ class ChangelogScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('What\'s New'),
-      ),
+      appBar: AppBar(title: const Text('What\'s New')),
       body: SafeArea(
         child: ResponsiveLayout(
           mobile: ListView.builder(

@@ -24,56 +24,61 @@ void main() {
     await Hive.close();
   });
 
-  testWidgets('AboutScreen renders dynamic package info and developer details', (WidgetTester tester) async {
-    PackageInfo.setMockInitialValues(
-      appName: 'PlayMate',
-      packageName: 'com.sundramdotdev.playmate',
-      version: '1.0.0',
-      buildNumber: '1',
-      buildSignature: '',
-    );
+  testWidgets(
+    'AboutScreen renders dynamic package info and developer details',
+    (WidgetTester tester) async {
+      PackageInfo.setMockInitialValues(
+        appName: 'PlayMate',
+        packageName: 'com.sundramdotdev.playmate',
+        version: '1.0.0',
+        buildNumber: '1',
+        buildSignature: '',
+      );
 
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          packageInfoProvider.overrideWith(
-            (ref) => PackageInfo(
-              appName: 'PlayMate',
-              packageName: 'com.sundramdotdev.playmate',
-              version: '1.0.0',
-              buildNumber: '1',
-              buildSignature: '',
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            packageInfoProvider.overrideWith(
+              (ref) => PackageInfo(
+                appName: 'PlayMate',
+                packageName: 'com.sundramdotdev.playmate',
+                version: '1.0.0',
+                buildNumber: '1',
+                buildSignature: '',
+              ),
             ),
+          ],
+          child: MaterialApp(
+            theme: AppTheme.lightTheme,
+            home: const AboutScreen(),
           ),
-        ],
-        child: MaterialApp(
-          theme: AppTheme.lightTheme,
-          home: const AboutScreen(),
         ),
-      ),
-    );
+      );
 
-    await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-    expect(find.text('PlayMate'), findsWidgets);
-    expect(find.text('Everything you need for offline games.'), findsOneWidget);
-    expect(find.text('Sundramdotdev'), findsOneWidget);
-    expect(find.text('Official Website'), findsOneWidget);
-    expect(find.text('GitHub'), findsOneWidget);
-    expect(find.text('LinkedIn'), findsOneWidget);
-    expect(find.text('PlayMate Repository'), findsOneWidget);
-    expect(find.text('Instagram'), findsOneWidget);
-    expect(find.text('Privacy Policy'), findsOneWidget);
-    expect(find.text('Terms & Conditions'), findsOneWidget);
-    expect(find.text('What\'s New in 1.1.0'), findsOneWidget);
-  });
+      expect(find.text('PlayMate'), findsWidgets);
+      expect(
+        find.text('Everything you need for offline games.'),
+        findsOneWidget,
+      );
+      expect(find.text('Sundramdotdev'), findsOneWidget);
+      expect(find.text('Official Website'), findsOneWidget);
+      expect(find.text('GitHub'), findsOneWidget);
+      expect(find.text('LinkedIn'), findsOneWidget);
+      expect(find.text('PlayMate Repository'), findsOneWidget);
+      expect(find.text('Instagram'), findsOneWidget);
+      expect(find.text('Privacy Policy'), findsOneWidget);
+      expect(find.text('Terms & Conditions'), findsOneWidget);
+      expect(find.text('What\'s New in 1.0.2'), findsOneWidget);
+    },
+  );
 
-  testWidgets('PrivacyPolicyScreen renders and scrolls without error', (WidgetTester tester) async {
+  testWidgets('PrivacyPolicyScreen renders and scrolls without error', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.darkTheme,
-        home: const PrivacyPolicyScreen(),
-      ),
+      MaterialApp(theme: AppTheme.darkTheme, home: const PrivacyPolicyScreen()),
     );
 
     await tester.pumpAndSettle();
@@ -85,10 +90,7 @@ void main() {
 
   testWidgets('TermsScreen renders correctly', (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.lightTheme,
-        home: const TermsScreen(),
-      ),
+      MaterialApp(theme: AppTheme.lightTheme, home: const TermsScreen()),
     );
 
     await tester.pumpAndSettle();
@@ -97,12 +99,11 @@ void main() {
     expect(find.text('1. Acceptance of Terms'), findsOneWidget);
   });
 
-  testWidgets('ChangelogScreen renders release milestones', (WidgetTester tester) async {
+  testWidgets('ChangelogScreen renders release milestones', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.darkTheme,
-        home: const ChangelogScreen(),
-      ),
+      MaterialApp(theme: AppTheme.darkTheme, home: const ChangelogScreen()),
     );
 
     await tester.pumpAndSettle();

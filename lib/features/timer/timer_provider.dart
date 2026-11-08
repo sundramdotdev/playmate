@@ -35,8 +35,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
   bool _hasFiredChessFlag = false;
 
   TimerNotifier({TimeSource? timeSource})
-      : _timeSource = timeSource ?? const SystemTimeSource(),
-        super(TimerState.initial()) {
+    : _timeSource = timeSource ?? const SystemTimeSource(),
+      super(TimerState.initial()) {
     _loadPersistedSettings();
   }
 
@@ -44,10 +44,14 @@ class TimerNotifier extends StateNotifier<TimerState> {
     if (!StorageService.isBoxOpen(StorageService.settingsBoxName)) return;
     final box = StorageService.getSettingsBox();
 
-    final countdownSec = box.get('timer_countdown_seconds', defaultValue: 300) as int;
-    final chessBaseSec = box.get('timer_chess_base_seconds', defaultValue: 300) as int;
-    final chessIncSec = box.get('timer_chess_inc_seconds', defaultValue: 0) as int;
-    final chessPreset = box.get('timer_chess_preset', defaultValue: 'blitz_5_0') as String;
+    final countdownSec =
+        box.get('timer_countdown_seconds', defaultValue: 300) as int;
+    final chessBaseSec =
+        box.get('timer_chess_base_seconds', defaultValue: 300) as int;
+    final chessIncSec =
+        box.get('timer_chess_inc_seconds', defaultValue: 0) as int;
+    final chessPreset =
+        box.get('timer_chess_preset', defaultValue: 'blitz_5_0') as String;
 
     state = state.copyWith(
       countdownInitial: Duration(seconds: countdownSec),
@@ -61,7 +65,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
   }
 
   Future<void> _persistSettings() async {
-    if (!mounted || !StorageService.isBoxOpen(StorageService.settingsBoxName)) return;
+    if (!mounted || !StorageService.isBoxOpen(StorageService.settingsBoxName)) {
+      return;
+    }
     final box = StorageService.getSettingsBox();
     await box.put('timer_countdown_seconds', state.countdownInitial.inSeconds);
     if (!mounted) return;
@@ -154,7 +160,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
   void removeTurnPlayer(int index) {
     if (state.turnPlayers.length <= 2) return; // Need at least 2 players
     final updated = List<TurnPlayer>.from(state.turnPlayers)..removeAt(index);
-    final newActiveIndex = state.activePlayerIndex >= updated.length ? 0 : state.activePlayerIndex;
+    final newActiveIndex = state.activePlayerIndex >= updated.length
+        ? 0
+        : state.activePlayerIndex;
     state = state.copyWith(
       turnPlayers: updated,
       activePlayerIndex: newActiveIndex,
@@ -206,7 +214,10 @@ class TimerNotifier extends StateNotifier<TimerState> {
     // Guard against starting an already expired state without reset
     if (state.mode == TimerMode.countdown && state.countdownFinished) return;
     if (state.mode == TimerMode.timer && state.roundFinished) return;
-    if (state.mode == TimerMode.chess && (state.chessPlayerAFlagged || state.chessPlayerBFlagged)) return;
+    if (state.mode == TimerMode.chess &&
+        (state.chessPlayerAFlagged || state.chessPlayerBFlagged)) {
+      return;
+    }
 
     _intervalStartUs = _timeSource.nowMicroseconds;
     state = state.copyWith(isRunning: true);
@@ -231,7 +242,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
     // Freeze monotonic delta into accumulated counters
     final int nowUs = _timeSource.nowMicroseconds;
-    final Duration intervalDelta = Duration(microseconds: nowUs - _intervalStartUs);
+    final Duration intervalDelta = Duration(
+      microseconds: nowUs - _intervalStartUs,
+    );
 
     _commitIntervalDelta(intervalDelta);
 
@@ -244,30 +257,43 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
     switch (state.mode) {
       case TimerMode.countdown:
-        updatedCountdownRemaining = state.countdownInitial - _accumulatedCountdownElapsed;
-        if (updatedCountdownRemaining < Duration.zero) updatedCountdownRemaining = Duration.zero;
+        updatedCountdownRemaining =
+            state.countdownInitial - _accumulatedCountdownElapsed;
+        if (updatedCountdownRemaining < Duration.zero) {
+          updatedCountdownRemaining = Duration.zero;
+        }
         break;
       case TimerMode.timer:
         final target = state.intervalPhase == IntervalPhase.work
             ? state.roundConfig.workDuration
             : state.roundConfig.restDuration;
         updatedRoundRemaining = target - _accumulatedRoundElapsed;
-        if (updatedRoundRemaining < Duration.zero) updatedRoundRemaining = Duration.zero;
+        if (updatedRoundRemaining < Duration.zero) {
+          updatedRoundRemaining = Duration.zero;
+        }
         break;
       case TimerMode.stopwatch:
         updatedStopwatchElapsed = _accumulatedStopwatchElapsed;
         break;
       case TimerMode.turn:
         updatedTurnRemaining = state.turnDuration - _accumulatedTurnElapsed;
-        if (updatedTurnRemaining < Duration.zero) updatedTurnRemaining = Duration.zero;
+        if (updatedTurnRemaining < Duration.zero) {
+          updatedTurnRemaining = Duration.zero;
+        }
         break;
       case TimerMode.chess:
         if (state.isPlayerATurn) {
-          updatedChessPlayerARemaining = state.chessBaseTime - _accumulatedChessPlayerAElapsed;
-          if (updatedChessPlayerARemaining < Duration.zero) updatedChessPlayerARemaining = Duration.zero;
+          updatedChessPlayerARemaining =
+              state.chessBaseTime - _accumulatedChessPlayerAElapsed;
+          if (updatedChessPlayerARemaining < Duration.zero) {
+            updatedChessPlayerARemaining = Duration.zero;
+          }
         } else {
-          updatedChessPlayerBRemaining = state.chessBaseTime - _accumulatedChessPlayerBElapsed;
-          if (updatedChessPlayerBRemaining < Duration.zero) updatedChessPlayerBRemaining = Duration.zero;
+          updatedChessPlayerBRemaining =
+              state.chessBaseTime - _accumulatedChessPlayerBElapsed;
+          if (updatedChessPlayerBRemaining < Duration.zero) {
+            updatedChessPlayerBRemaining = Duration.zero;
+          }
         }
         break;
     }
@@ -355,8 +381,11 @@ class TimerNotifier extends StateNotifier<TimerState> {
     if (state.mode != TimerMode.stopwatch || !state.isRunning) return;
 
     final int nowUs = _timeSource.nowMicroseconds;
-    final Duration currentIntervalDelta = Duration(microseconds: nowUs - _intervalStartUs);
-    final Duration currentTotal = _accumulatedStopwatchElapsed + currentIntervalDelta;
+    final Duration currentIntervalDelta = Duration(
+      microseconds: nowUs - _intervalStartUs,
+    );
+    final Duration currentTotal =
+        _accumulatedStopwatchElapsed + currentIntervalDelta;
     final Duration split = currentTotal - _lastLapTotalTime;
     _lastLapTotalTime = currentTotal;
 
@@ -391,7 +420,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
       activePlayerIndex: nextIndex,
       turnRemaining: state.turnDuration,
       turnExpired: false,
-      currentTurnRound: isNewRound ? state.currentTurnRound + 1 : state.currentTurnRound,
+      currentTurnRound: isNewRound
+          ? state.currentTurnRound + 1
+          : state.currentTurnRound,
     );
   }
 
@@ -410,24 +441,36 @@ class TimerNotifier extends StateNotifier<TimerState> {
     if (state.isPlayerATurn) {
       _accumulatedChessPlayerAElapsed += delta;
       // Apply increment to Player A who just finished move
-      final remaining = (state.chessBaseTime - _accumulatedChessPlayerAElapsed + state.chessIncrement);
+      final remaining =
+          (state.chessBaseTime -
+          _accumulatedChessPlayerAElapsed +
+          state.chessIncrement);
       state = state.copyWith(
         isPlayerATurn: false,
-        chessPlayerARemaining: remaining > Duration.zero ? remaining : Duration.zero,
+        chessPlayerARemaining: remaining > Duration.zero
+            ? remaining
+            : Duration.zero,
         chessPlayerAMoves: state.chessPlayerAMoves + 1,
       );
       // Adjust accumulated so future ticks calculate from the incremented value
-      _accumulatedChessPlayerAElapsed = state.chessBaseTime - state.chessPlayerARemaining;
+      _accumulatedChessPlayerAElapsed =
+          state.chessBaseTime - state.chessPlayerARemaining;
     } else {
       _accumulatedChessPlayerBElapsed += delta;
       // Apply increment to Player B who just finished move
-      final remaining = (state.chessBaseTime - _accumulatedChessPlayerBElapsed + state.chessIncrement);
+      final remaining =
+          (state.chessBaseTime -
+          _accumulatedChessPlayerBElapsed +
+          state.chessIncrement);
       state = state.copyWith(
         isPlayerATurn: true,
-        chessPlayerBRemaining: remaining > Duration.zero ? remaining : Duration.zero,
+        chessPlayerBRemaining: remaining > Duration.zero
+            ? remaining
+            : Duration.zero,
         chessPlayerBMoves: state.chessPlayerBMoves + 1,
       );
-      _accumulatedChessPlayerBElapsed = state.chessBaseTime - state.chessPlayerBRemaining;
+      _accumulatedChessPlayerBElapsed =
+          state.chessBaseTime - state.chessPlayerBRemaining;
     }
   }
 
@@ -439,11 +482,14 @@ class TimerNotifier extends StateNotifier<TimerState> {
     if (!state.isRunning) return;
 
     final int nowUs = _timeSource.nowMicroseconds;
-    final Duration currentIntervalDelta = Duration(microseconds: nowUs - _intervalStartUs);
+    final Duration currentIntervalDelta = Duration(
+      microseconds: nowUs - _intervalStartUs,
+    );
 
     switch (state.mode) {
       case TimerMode.countdown:
-        final totalElapsed = _accumulatedCountdownElapsed + currentIntervalDelta;
+        final totalElapsed =
+            _accumulatedCountdownElapsed + currentIntervalDelta;
         final remaining = state.countdownInitial - totalElapsed;
 
         if (remaining <= Duration.zero) {
@@ -467,7 +513,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
         break;
 
       case TimerMode.stopwatch:
-        final totalElapsed = _accumulatedStopwatchElapsed + currentIntervalDelta;
+        final totalElapsed =
+            _accumulatedStopwatchElapsed + currentIntervalDelta;
         state = state.copyWith(stopwatchElapsed: totalElapsed);
         break;
 
@@ -551,7 +598,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
   void _handleChessTick(Duration currentIntervalDelta) {
     if (state.isPlayerATurn) {
-      final totalElapsed = _accumulatedChessPlayerAElapsed + currentIntervalDelta;
+      final totalElapsed =
+          _accumulatedChessPlayerAElapsed + currentIntervalDelta;
       final remaining = state.chessBaseTime - totalElapsed;
 
       if (remaining <= Duration.zero) {
@@ -569,7 +617,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
         state = state.copyWith(chessPlayerARemaining: remaining);
       }
     } else {
-      final totalElapsed = _accumulatedChessPlayerBElapsed + currentIntervalDelta;
+      final totalElapsed =
+          _accumulatedChessPlayerBElapsed + currentIntervalDelta;
       final remaining = state.chessBaseTime - totalElapsed;
 
       if (remaining <= Duration.zero) {

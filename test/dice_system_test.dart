@@ -51,50 +51,69 @@ void main() {
       expect(f4.localNormal.x, equals(-1.0));
     });
 
-    test('For every value 1 to 6, base rotation points the face normal at camera (0, 0, -1)', () {
-      for (int val = 1; val <= 6; val++) {
-        final rot = DiceFaceOrientation.getBaseEulerForValue(val);
-        final rotMatrix = Matrix4.identity()
-          ..rotateX(rot.x)
-          ..rotateY(rot.y)
-          ..rotateZ(rot.z);
+    test(
+      'For every value 1 to 6, base rotation points the face normal at camera (0, 0, -1)',
+      () {
+        for (int val = 1; val <= 6; val++) {
+          final rot = DiceFaceOrientation.getBaseEulerForValue(val);
+          final rotMatrix = Matrix4.identity()
+            ..rotateX(rot.x)
+            ..rotateY(rot.y)
+            ..rotateZ(rot.z);
 
-        final targetFace =
-            DiceFaceOrientation.canonicalFaces.firstWhere((f) => f.value == val);
-        final s = rotMatrix.storage;
-        final nx = targetFace.localNormal.x;
-        final ny = targetFace.localNormal.y;
-        final nz = targetFace.localNormal.z;
+          final targetFace = DiceFaceOrientation.canonicalFaces.firstWhere(
+            (f) => f.value == val,
+          );
+          final s = rotMatrix.storage;
+          final nx = targetFace.localNormal.x;
+          final ny = targetFace.localNormal.y;
+          final nz = targetFace.localNormal.z;
 
-        final worldZ = s[2] * nx + s[6] * ny + s[10] * nz;
-        final worldX = s[0] * nx + s[4] * ny + s[8] * nz;
-        final worldY = s[1] * nx + s[5] * ny + s[9] * nz;
+          final worldZ = s[2] * nx + s[6] * ny + s[10] * nz;
+          final worldX = s[0] * nx + s[4] * ny + s[8] * nz;
+          final worldY = s[1] * nx + s[5] * ny + s[9] * nz;
 
-        // Facing camera directly means normal Z is close to -1.0, X and Y close to 0.0
-        expect(worldZ, closeTo(-1.0, 0.001), reason: 'Value $val must face camera');
-        expect(worldX, closeTo(0.0, 0.001), reason: 'Value $val must have worldX=0');
-        expect(worldY, closeTo(0.0, 0.001), reason: 'Value $val must have worldY=0');
-      }
-    });
-
-    test('computeVisibleFaces returns at most 3 visible faces in depth order', () {
-      for (int val = 1; val <= 6; val++) {
-        final restingEuler = DiceFaceOrientation.getRestingEulerForValue(val);
-        final visible = DiceFaceOrientation.computeVisibleFaces(
-          cubeRotation: restingEuler,
-          halfExtent: 50.0,
-        );
-
-        expect(visible.length, inInclusiveRange(1, 3));
-        // The winning face must always be in the visible set
-        expect(visible.any((f) => f.value == val), isTrue);
-
-        // Painter's algorithm verification: elements sorted from greatest depthZ to least
-        for (int i = 0; i < visible.length - 1; i++) {
-          expect(visible[i].depthZ >= visible[i + 1].depthZ, isTrue);
+          // Facing camera directly means normal Z is close to -1.0, X and Y close to 0.0
+          expect(
+            worldZ,
+            closeTo(-1.0, 0.001),
+            reason: 'Value $val must face camera',
+          );
+          expect(
+            worldX,
+            closeTo(0.0, 0.001),
+            reason: 'Value $val must have worldX=0',
+          );
+          expect(
+            worldY,
+            closeTo(0.0, 0.001),
+            reason: 'Value $val must have worldY=0',
+          );
         }
-      }
-    });
+      },
+    );
+
+    test(
+      'computeVisibleFaces returns at most 3 visible faces in depth order',
+      () {
+        for (int val = 1; val <= 6; val++) {
+          final restingEuler = DiceFaceOrientation.getRestingEulerForValue(val);
+          final visible = DiceFaceOrientation.computeVisibleFaces(
+            cubeRotation: restingEuler,
+            halfExtent: 50.0,
+          );
+
+          expect(visible.length, inInclusiveRange(1, 3));
+          // The winning face must always be in the visible set
+          expect(visible.any((f) => f.value == val), isTrue);
+
+          // Painter's algorithm verification: elements sorted from greatest depthZ to least
+          for (int i = 0; i < visible.length - 1; i++) {
+            expect(visible[i].depthZ >= visible[i + 1].depthZ, isTrue);
+          }
+        }
+      },
+    );
   });
 
   group('Dice Logic & Riverpod Notifier', () {
@@ -129,31 +148,39 @@ void main() {
       expect(state.totalSum, equals(12));
     });
 
-    test('Roll updates state to target rolls and records history after completion', () async {
-      final container = ProviderContainer();
-      final future = container.read(diceProvider.notifier).roll();
+    test(
+      'Roll updates state to target rolls and records history after completion',
+      () async {
+        final container = ProviderContainer();
+        final future = container.read(diceProvider.notifier).roll();
 
-      // Immediately becomes isRolling: true with valid target rolls 1..6
-      final rollingState = container.read(diceProvider);
-      expect(rollingState.isRolling, isTrue);
-      expect(rollingState.currentRolls.length, equals(1));
-      expect(rollingState.currentRolls.first, inInclusiveRange(1, 6));
+        // Immediately becomes isRolling: true with valid target rolls 1..6
+        final rollingState = container.read(diceProvider);
+        expect(rollingState.isRolling, isTrue);
+        expect(rollingState.currentRolls.length, equals(1));
+        expect(rollingState.currentRolls.first, inInclusiveRange(1, 6));
 
-      // Duplicate roll while rolling is rejected
-      await container.read(diceProvider.notifier).roll();
+        // Duplicate roll while rolling is rejected
+        await container.read(diceProvider.notifier).roll();
 
-      // Await roll completion
-      await future;
+        // Await roll completion
+        await future;
 
-      final settledState = container.read(diceProvider);
-      expect(settledState.isRolling, isFalse);
-      expect(settledState.rollHistory.isNotEmpty, isTrue);
-      expect(settledState.rollHistory.first, equals(settledState.currentRolls));
-    });
+        final settledState = container.read(diceProvider);
+        expect(settledState.isRolling, isFalse);
+        expect(settledState.rollHistory.isNotEmpty, isTrue);
+        expect(
+          settledState.rollHistory.first,
+          equals(settledState.currentRolls),
+        );
+      },
+    );
   });
 
   group('Dice UI Widgets & Semantics', () {
-    testWidgets('DicePips renders correct pip counts and PlayMate brand mark', (tester) async {
+    testWidgets('DicePips renders correct pip counts and PlayMate brand mark', (
+      tester,
+    ) async {
       for (int val = 1; val <= 6; val++) {
         await tester.pumpWidget(
           MaterialApp(
@@ -170,11 +197,16 @@ void main() {
         );
 
         expect(find.byType(DicePips), findsOneWidget);
-        expect(DicePips.normalizedPipOffsets[val]!.length, equals(val == 1 ? 1 : val));
+        expect(
+          DicePips.normalizedPipOffsets[val]!.length,
+          equals(val == 1 ? 1 : val),
+        );
       }
     });
 
-    testWidgets('PlayMateDice renders tactile 3D die with semantics', (tester) async {
+    testWidgets('PlayMateDice renders tactile 3D die with semantics', (
+      tester,
+    ) async {
       bool rollRequested = false;
 
       await tester.pumpWidget(
@@ -202,7 +234,9 @@ void main() {
       expect(rollRequested, isTrue);
     });
 
-    testWidgets('DiceRollerView coordinates multi-dice layout (4 dice)', (tester) async {
+    testWidgets('DiceRollerView coordinates multi-dice layout (4 dice)', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -230,7 +264,9 @@ void main() {
     final testWidths = [320.0, 360.0, 390.0, 412.0, 768.0];
 
     for (final width in testWidths) {
-      testWidgets('DiceScreen renders without overflow at ${width}px width', (tester) async {
+      testWidgets('DiceScreen renders without overflow at ${width}px width', (
+        tester,
+      ) async {
         tester.view.physicalSize = Size(width, 800);
         tester.view.devicePixelRatio = 1.0;
         addTearDown(tester.view.resetPhysicalSize);

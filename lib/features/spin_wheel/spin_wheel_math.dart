@@ -41,7 +41,9 @@ class SpinWheelMath {
     // To bring sector center ((index + 0.5) * sweep) to the pointer:
     // centerAngle + finalRotation = pointerAngle (mod 2pi)
     // finalRotation = - (winningIndex + 0.5) * sweep (mod 2pi)
-    final double targetBase = (2 * math.pi - ((winningIndex + 0.5) * sweep) % (2 * math.pi)) % (2 * math.pi);
+    final double targetBase =
+        (2 * math.pi - ((winningIndex + 0.5) * sweep) % (2 * math.pi)) %
+        (2 * math.pi);
 
     final double normalizedCurrent = currentRotation % (2 * math.pi);
     double delta = targetBase - normalizedCurrent;
@@ -60,7 +62,8 @@ class SpinWheelMath {
     if (count <= 0) return 0;
     final double sweep = getSweepAngle(count);
     // Effective angle on the unrotated wheel that corresponds to pointerAngle
-    final double effectiveAngle = (2 * math.pi - (rotation % (2 * math.pi))) % (2 * math.pi);
+    final double effectiveAngle =
+        (2 * math.pi - (rotation % (2 * math.pi))) % (2 * math.pi);
     final int index = (effectiveAngle / sweep).floor() % count;
     return index;
   }
@@ -111,4 +114,3 @@ class SpinWheelMath {
     }
   }
 }
-

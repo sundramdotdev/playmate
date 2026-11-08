@@ -19,7 +19,10 @@ class TimeFormatter {
     final hours = d.inHours;
     final minutes = (d.inMinutes % 60).toString().padLeft(2, '0');
     final seconds = (d.inSeconds % 60).toString().padLeft(2, '0');
-    final centiseconds = ((d.inMilliseconds % 1000) ~/ 10).toString().padLeft(2, '0');
+    final centiseconds = ((d.inMilliseconds % 1000) ~/ 10).toString().padLeft(
+      2,
+      '0',
+    );
 
     if (hours > 0) {
       return '$hours:$minutes:$seconds.$centiseconds';
@@ -37,4 +40,3 @@ class TimeFormatter {
     return formatMmSs(d);
   }
 }
-

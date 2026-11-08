@@ -7,7 +7,8 @@ class TeamGeneratorScreen extends ConsumerStatefulWidget {
   const TeamGeneratorScreen({super.key});
 
   @override
-  ConsumerState<TeamGeneratorScreen> createState() => _TeamGeneratorScreenState();
+  ConsumerState<TeamGeneratorScreen> createState() =>
+      _TeamGeneratorScreenState();
 }
 
 class _TeamGeneratorScreenState extends ConsumerState<TeamGeneratorScreen> {
@@ -97,7 +98,10 @@ class _TeamGeneratorScreenState extends ConsumerState<TeamGeneratorScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
-          child: Text('Players (${players.length})', style: theme.textTheme.titleLarge),
+          child: Text(
+            'Players (${players.length})',
+            style: theme.textTheme.titleLarge,
+          ),
         ),
         Expanded(
           child: ListView.builder(
@@ -111,7 +115,8 @@ class _TeamGeneratorScreenState extends ConsumerState<TeamGeneratorScreen> {
                   title: Text(player),
                   trailing: IconButton(
                     icon: const Icon(Icons.remove_circle_outline),
-                    onPressed: () => ref.read(teamProvider.notifier).removePlayer(player),
+                    onPressed: () =>
+                        ref.read(teamProvider.notifier).removePlayer(player),
                   ),
                 ),
               );
@@ -133,7 +138,8 @@ class _TeamGeneratorScreenState extends ConsumerState<TeamGeneratorScreen> {
             children: [
               Text('Generated Teams', style: theme.textTheme.titleLarge),
               TextButton(
-                onPressed: () => ref.read(teamProvider.notifier).generateTeams(),
+                onPressed: () =>
+                    ref.read(teamProvider.notifier).generateTeams(),
                 child: const Text('Shuffle Again'),
               ),
             ],
@@ -154,13 +160,19 @@ class _TeamGeneratorScreenState extends ConsumerState<TeamGeneratorScreen> {
                     children: [
                       Text(
                         'Team ${index + 1}',
-                        style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const Divider(),
-                      ...team.map((player) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-                            child: Text(player, style: theme.textTheme.bodyLarge),
-                          )),
+                      ...team.map(
+                        (player) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.xs,
+                          ),
+                          child: Text(player, style: theme.textTheme.bodyLarge),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -210,12 +222,17 @@ class _TeamGeneratorScreenState extends ConsumerState<TeamGeneratorScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: theme.colorScheme.onPrimary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onPressed: teamState.players.length >= teamState.numberOfTeams
                   ? () => ref.read(teamProvider.notifier).generateTeams()
                   : null,
-              child: const Text('GENERATE TEAMS', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text(
+                'GENERATE TEAMS',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],

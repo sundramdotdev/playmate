@@ -102,14 +102,23 @@ class _DicePipsPainter extends CustomPainter {
     }
   }
 
-  void _drawRecessedPip(Canvas canvas, Offset center, double radius, bool isOnePip) {
+  void _drawRecessedPip(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    bool isOnePip,
+  ) {
     // 1. Recessed inner shadow (top-left rim)
     final innerShadowPaint = Paint()
       ..color = isDarkMode
           ? Colors.black.withValues(alpha: 0.6)
           : Colors.black.withValues(alpha: 0.25)
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(center + const Offset(0.4, 0.6), radius + 0.5, innerShadowPaint);
+    canvas.drawCircle(
+      center + const Offset(0.4, 0.6),
+      radius + 0.5,
+      innerShadowPaint,
+    );
 
     // 2. Subtle light reflection on bottom-right rim
     final rimHighlightPaint = Paint()
@@ -125,14 +134,8 @@ class _DicePipsPainter extends CustomPainter {
       center: const Alignment(-0.25, -0.25),
       radius: 0.9,
       colors: isDarkMode
-          ? [
-              pipColor,
-              pipColor.withValues(alpha: 0.88),
-            ]
-          : [
-              pipColor.withValues(alpha: 0.92),
-              pipColor,
-            ],
+          ? [pipColor, pipColor.withValues(alpha: 0.88)]
+          : [pipColor.withValues(alpha: 0.92), pipColor],
     );
 
     final pipPaint = Paint()

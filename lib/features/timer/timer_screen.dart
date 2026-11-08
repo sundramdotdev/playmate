@@ -19,13 +19,23 @@ class TimerScreen extends ConsumerStatefulWidget {
 
 class _TimerScreenState extends ConsumerState<TimerScreen> {
   // Custom duration controllers
-  final TextEditingController _customMinutesController = TextEditingController(text: '5');
-  final TextEditingController _customSecondsController = TextEditingController(text: '0');
+  final TextEditingController _customMinutesController = TextEditingController(
+    text: '5',
+  );
+  final TextEditingController _customSecondsController = TextEditingController(
+    text: '0',
+  );
 
   // Round timer controllers
-  final TextEditingController _workMinController = TextEditingController(text: '3');
-  final TextEditingController _restSecController = TextEditingController(text: '30');
-  final TextEditingController _roundsController = TextEditingController(text: '3');
+  final TextEditingController _workMinController = TextEditingController(
+    text: '3',
+  );
+  final TextEditingController _restSecController = TextEditingController(
+    text: '30',
+  );
+  final TextEditingController _roundsController = TextEditingController(
+    text: '3',
+  );
 
   // Player name controller for turn timer
   final TextEditingController _newPlayerController = TextEditingController();
@@ -78,7 +88,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                   children: [
                     const Text(
                       'Countdown Presets',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
@@ -94,10 +107,13 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                     final label = duration.inMinutes == 0
                         ? '${duration.inSeconds}s'
                         : duration.inHours == 0
-                            ? '${duration.inMinutes}m'
-                            : '${duration.inHours}h';
+                        ? '${duration.inMinutes}m'
+                        : '${duration.inHours}h';
                     return ActionChip(
-                      label: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      label: Text(
+                        label,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       onPressed: () {
                         notifier.configureCountdown(duration);
                         Navigator.pop(ctx);
@@ -137,8 +153,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                     const SizedBox(width: 8),
                     FilledButton(
                       onPressed: () {
-                        final mins = int.tryParse(_customMinutesController.text) ?? 0;
-                        final secs = int.tryParse(_customSecondsController.text) ?? 0;
+                        final mins =
+                            int.tryParse(_customMinutesController.text) ?? 0;
+                        final secs =
+                            int.tryParse(_customSecondsController.text) ?? 0;
                         final total = Duration(minutes: mins, seconds: secs);
                         if (total > Duration.zero) {
                           notifier.configureCountdown(total);
@@ -181,7 +199,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                     children: [
                       const Text(
                         'Chess Time Controls',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.close),
@@ -200,13 +221,18 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                     title: Text(
                       preset.name,
                       style: TextStyle(
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.w500,
                         color: isSelected ? const Color(0xFFC18A42) : null,
                       ),
                     ),
                     subtitle: Text('${preset.baseTime.inMinutes} mins$incText'),
                     trailing: isSelected
-                        ? const Icon(Icons.check_circle, color: Color(0xFFC18A42))
+                        ? const Icon(
+                            Icons.check_circle,
+                            color: Color(0xFFC18A42),
+                          )
                         : null,
                     onTap: () {
                       notifier.applyChessPreset(preset);
@@ -249,7 +275,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                           children: [
                             Text(
                               'Players (${timerState.turnPlayers.length})',
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             IconButton(
                               icon: const Icon(Icons.close),
@@ -259,7 +288,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         child: Row(
                           children: [
                             Expanded(
@@ -273,7 +305,9 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                                 ),
                                 onSubmitted: (val) {
                                   if (val.trim().isNotEmpty) {
-                                    ref.read(timerProvider.notifier).addTurnPlayer(val);
+                                    ref
+                                        .read(timerProvider.notifier)
+                                        .addTurnPlayer(val);
                                     _newPlayerController.clear();
                                   }
                                 },
@@ -282,7 +316,9 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                             const SizedBox(width: 8),
                             FilledButton(
                               onPressed: () {
-                                if (_newPlayerController.text.trim().isNotEmpty) {
+                                if (_newPlayerController.text
+                                    .trim()
+                                    .isNotEmpty) {
                                   ref
                                       .read(timerProvider.notifier)
                                       .addTurnPlayer(_newPlayerController.text);
@@ -306,7 +342,9 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                             return ListTile(
                               leading: CircleAvatar(
                                 radius: 14,
-                                backgroundColor: const Color(0xFFC18A42).withValues(alpha: 0.2),
+                                backgroundColor: const Color(
+                                  0xFFC18A42,
+                                ).withValues(alpha: 0.2),
                                 child: Text(
                                   '${index + 1}',
                                   style: const TextStyle(
@@ -320,12 +358,18 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                               trailing: IconButton(
                                 icon: Icon(
                                   Icons.delete_outline,
-                                  color: canDelete ? Colors.red.shade400 : Colors.grey,
+                                  color: canDelete
+                                      ? Colors.red.shade400
+                                      : Colors.grey,
                                 ),
                                 onPressed: canDelete
-                                    ? () => ref.read(timerProvider.notifier).removeTurnPlayer(index)
+                                    ? () => ref
+                                          .read(timerProvider.notifier)
+                                          .removeTurnPlayer(index)
                                     : null,
-                                tooltip: canDelete ? 'Remove player' : 'Minimum 2 players required',
+                                tooltip: canDelete
+                                    ? 'Remove player'
+                                    : 'Minimum 2 players required',
                               ),
                             );
                           },
@@ -369,7 +413,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                   children: [
                     const Text(
                       'Configure Round Timer',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
@@ -419,15 +466,19 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                   width: double.infinity,
                   child: FilledButton(
                     onPressed: () {
-                      final workMins = int.tryParse(_workMinController.text) ?? 3;
-                      final restSecs = int.tryParse(_restSecController.text) ?? 30;
+                      final workMins =
+                          int.tryParse(_workMinController.text) ?? 3;
+                      final restSecs =
+                          int.tryParse(_restSecController.text) ?? 30;
                       final rounds = int.tryParse(_roundsController.text) ?? 3;
 
-                      notifier.configureRoundTimer(RoundTimerConfig(
-                        workDuration: Duration(minutes: workMins),
-                        restDuration: Duration(seconds: restSecs),
-                        totalRounds: rounds,
-                      ));
+                      notifier.configureRoundTimer(
+                        RoundTimerConfig(
+                          workDuration: Duration(minutes: workMins),
+                          restDuration: Duration(seconds: restSecs),
+                          totalRounds: rounds,
+                        ),
+                      );
                       Navigator.pop(ctx);
                     },
                     child: const Text('APPLY SETTINGS'),
@@ -458,25 +509,33 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
           if (timerState.mode == TimerMode.countdown)
             IconButton(
               icon: const Icon(Icons.tune),
-              onPressed: timerState.isRunning ? null : () => _showCountdownPresetsSheet(context),
+              onPressed: timerState.isRunning
+                  ? null
+                  : () => _showCountdownPresetsSheet(context),
               tooltip: 'Presets & Duration',
             ),
           if (timerState.mode == TimerMode.timer)
             IconButton(
               icon: const Icon(Icons.settings),
-              onPressed: timerState.isRunning ? null : () => _showRoundConfigSheet(context),
+              onPressed: timerState.isRunning
+                  ? null
+                  : () => _showRoundConfigSheet(context),
               tooltip: 'Round Settings',
             ),
           if (timerState.mode == TimerMode.turn)
             IconButton(
               icon: const Icon(Icons.group),
-              onPressed: timerState.isRunning ? null : () => _showTurnPlayersSheet(context),
+              onPressed: timerState.isRunning
+                  ? null
+                  : () => _showTurnPlayersSheet(context),
               tooltip: 'Manage Players',
             ),
           if (timerState.mode == TimerMode.chess)
             IconButton(
               icon: const Icon(Icons.tune),
-              onPressed: timerState.isRunning ? null : () => _showChessPresetsSheet(context),
+              onPressed: timerState.isRunning
+                  ? null
+                  : () => _showChessPresetsSheet(context),
               tooltip: 'Time Controls',
             ),
           IconButton(
@@ -493,7 +552,8 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
               // 1. Top Mode Selector Chip Row
               TimerModeSelector(
                 selectedMode: timerState.mode,
-                onModeChanged: (mode) => ref.read(timerProvider.notifier).setMode(mode),
+                onModeChanged: (mode) =>
+                    ref.read(timerProvider.notifier).setMode(mode),
               ),
 
               // 2. Mode Content Body
@@ -501,7 +561,9 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                 child: Center(
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.m,
+                    ),
                     child: _buildActiveModeContent(timerState, theme, isDark),
                   ),
                 ),
@@ -517,7 +579,11 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     );
   }
 
-  Widget _buildActiveModeContent(TimerState timerState, ThemeData theme, bool isDark) {
+  Widget _buildActiveModeContent(
+    TimerState timerState,
+    ThemeData theme,
+    bool isDark,
+  ) {
     switch (timerState.mode) {
       case TimerMode.countdown:
         return _buildCountdownView(timerState, theme);
@@ -541,8 +607,8 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     final subtitle = timerState.countdownFinished
         ? 'COMPLETED!'
         : timerState.isRunning
-            ? 'Counting down'
-            : 'Paused / Ready';
+        ? 'Counting down'
+        : 'Paused / Ready';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -555,26 +621,41 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
         ),
         const SizedBox(height: 16),
         InkWell(
-          onTap: timerState.isRunning ? null : () => _showCountdownPresetsSheet(context),
+          onTap: timerState.isRunning
+              ? null
+              : () => _showCountdownPresetsSheet(context),
           borderRadius: BorderRadius.circular(14),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFFC18A42).withValues(alpha: 0.3)),
+              border: Border.all(
+                color: const Color(0xFFC18A42).withValues(alpha: 0.3),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.timer_outlined, size: 16, color: Color(0xFFC18A42)),
+                const Icon(
+                  Icons.timer_outlined,
+                  size: 16,
+                  color: Color(0xFFC18A42),
+                ),
                 const SizedBox(width: 6),
                 Text(
                   'Initial: ${TimeFormatter.formatMmSs(timerState.countdownInitial)}',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(Icons.arrow_drop_down, size: 16, color: Color(0xFFC18A42)),
+                const Icon(
+                  Icons.arrow_drop_down,
+                  size: 16,
+                  color: Color(0xFFC18A42),
+                ),
               ],
             ),
           ),
@@ -583,7 +664,11 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     );
   }
 
-  Widget _buildRoundTimerView(TimerState timerState, ThemeData theme, bool isDark) {
+  Widget _buildRoundTimerView(
+    TimerState timerState,
+    ThemeData theme,
+    bool isDark,
+  ) {
     final formatted = TimeFormatter.formatMmSs(timerState.roundRemaining);
     final isWork = timerState.intervalPhase == IntervalPhase.work;
     final isDone = timerState.roundFinished;
@@ -591,8 +676,8 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     final badgeColor = isDone
         ? Colors.grey
         : isWork
-            ? (isDark ? const Color(0xFFC18A42) : const Color(0xFF1A1A1A))
-            : Colors.blueAccent;
+        ? (isDark ? const Color(0xFFC18A42) : const Color(0xFF1A1A1A))
+        : Colors.blueAccent;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -622,8 +707,8 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
           subtitle: isDone
               ? 'Great effort!'
               : timerState.isRunning
-                  ? 'Stay focused'
-                  : 'Paused',
+              ? 'Stay focused'
+              : 'Paused',
           fontSize: 84,
           isFlagged: isDone,
         ),
@@ -632,7 +717,9 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
   }
 
   Widget _buildStopwatchView(TimerState timerState, ThemeData theme) {
-    final formatted = TimeFormatter.formatStopwatch(timerState.stopwatchElapsed);
+    final formatted = TimeFormatter.formatStopwatch(
+      timerState.stopwatchElapsed,
+    );
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -648,9 +735,14 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     );
   }
 
-  Widget _buildTurnTimerView(TimerState timerState, ThemeData theme, bool isDark) {
+  Widget _buildTurnTimerView(
+    TimerState timerState,
+    ThemeData theme,
+    bool isDark,
+  ) {
     final activePlayer = timerState.turnPlayers[timerState.activePlayerIndex];
-    final nextPlayerIndex = (timerState.activePlayerIndex + 1) % timerState.turnPlayers.length;
+    final nextPlayerIndex =
+        (timerState.activePlayerIndex + 1) % timerState.turnPlayers.length;
     final nextPlayer = timerState.turnPlayers[nextPlayerIndex];
 
     final formatted = TimeFormatter.formatMmSs(timerState.turnRemaining);
@@ -669,12 +761,19 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
             children: [
               Text(
                 'ROUND ${timerState.currentTurnRound}',
-                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 0.8),
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.8,
+                ),
               ),
               const SizedBox(height: 2),
               Text(
                 activePlayer.name.toUpperCase(),
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ],
           ),
@@ -692,7 +791,11 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     );
   }
 
-  Widget _buildChessClockView(TimerState timerState, ThemeData theme, bool isDark) {
+  Widget _buildChessClockView(
+    TimerState timerState,
+    ThemeData theme,
+    bool isDark,
+  ) {
     return Column(
       children: [
         // Player B (Top) - Rotated 180 degrees for face-to-face play
@@ -731,7 +834,9 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,
                   foregroundColor: theme.colorScheme.onPrimary,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 onPressed: () {
                   if (timerState.isRunning) {
@@ -740,12 +845,17 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                     ref.read(timerProvider.notifier).start();
                   }
                 },
-                icon: Icon(timerState.isRunning ? Icons.pause : Icons.play_arrow, size: 18),
+                icon: Icon(
+                  timerState.isRunning ? Icons.pause : Icons.play_arrow,
+                  size: 18,
+                ),
                 label: Text(timerState.isRunning ? 'PAUSE' : 'START'),
               ),
               IconButton(
                 icon: const Icon(Icons.tune),
-                onPressed: timerState.isRunning ? null : () => _showChessPresetsSheet(context),
+                onPressed: timerState.isRunning
+                    ? null
+                    : () => _showChessPresetsSheet(context),
                 tooltip: 'Time Controls',
               ),
             ],
@@ -784,10 +894,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     final bgColor = isFlagged
         ? Colors.red.withValues(alpha: 0.2)
         : isActive
-            ? (isDark
-                ? const Color(0xFFC18A42).withValues(alpha: 0.2)
-                : const Color(0xFF1A1A1A).withValues(alpha: 0.08))
-            : Colors.transparent;
+        ? (isDark
+              ? const Color(0xFFC18A42).withValues(alpha: 0.2)
+              : const Color(0xFF1A1A1A).withValues(alpha: 0.08))
+        : Colors.transparent;
 
     final borderColor = isActive ? const Color(0xFFC18A42) : Colors.transparent;
 
@@ -813,14 +923,19 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.0,
-                    color: isActive ? const Color(0xFFC18A42) : theme.colorScheme.secondary,
+                    color: isActive
+                        ? const Color(0xFFC18A42)
+                        : theme.colorScheme.secondary,
                   ),
                 ),
                 if (moves > 0) ...[
                   const SizedBox(width: 8),
                   Text(
                     '($moves moves)',
-                    style: TextStyle(fontSize: 12, color: theme.colorScheme.secondary),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: theme.colorScheme.secondary,
+                    ),
                   ),
                 ],
               ],
@@ -836,7 +951,11 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
                   'TAP TO END MOVE',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 0.5),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    letterSpacing: 0.5,
+                  ),
                 ),
               ),
           ],

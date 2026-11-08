@@ -237,7 +237,8 @@ class _CricketScreenState extends ConsumerState<CricketScreen> {
                     backgroundColor: theme.colorScheme.errorContainer,
                     foregroundColor: theme.colorScheme.onErrorContainer,
                   ),
-                  onPressed: () => ref.read(cricketProvider.notifier).addWicket(),
+                  onPressed: () =>
+                      ref.read(cricketProvider.notifier).addWicket(),
                   icon: const Icon(Icons.outbox),
                   label: const Text('WICKET'),
                 ),

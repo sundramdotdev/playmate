@@ -20,9 +20,7 @@ class SettingsScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: SafeArea(
         child: ResponsiveLayout(
           mobile: ListView(
@@ -36,8 +34,9 @@ class SettingsScreen extends ConsumerWidget {
                       subtitle: const Text('Use clean Notion dark theme'),
                       value: themeMode == ThemeMode.dark,
                       onChanged: (value) async {
-                        ref.read(themeModeProvider.notifier).state =
-                            value ? ThemeMode.dark : ThemeMode.light;
+                        ref.read(themeModeProvider.notifier).state = value
+                            ? ThemeMode.dark
+                            : ThemeMode.light;
                         await StorageService.setDarkMode(value);
                       },
                     ),
@@ -49,12 +48,20 @@ class SettingsScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.delete_sweep, color: theme.colorScheme.error),
+                      leading: Icon(
+                        Icons.delete_sweep,
+                        color: theme.colorScheme.error,
+                      ),
                       title: Text(
                         'Clear Match History',
-                        style: TextStyle(color: theme.colorScheme.error, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: theme.colorScheme.error,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      subtitle: const Text('Deletes all local matches and dice histories'),
+                      subtitle: const Text(
+                        'Deletes all local matches and dice histories',
+                      ),
                       onTap: () async {
                         final confirmed = await showDialog<bool>(
                           context: context,
@@ -84,7 +91,9 @@ class SettingsScreen extends ConsumerWidget {
                           final messenger = ScaffoldMessenger.of(context);
                           await StorageService.clearAllData();
                           messenger.showSnackBar(
-                            const SnackBar(content: Text('All data cleared successfully!')),
+                            const SnackBar(
+                              content: Text('All data cleared successfully!'),
+                            ),
                           );
                         }
                       },
@@ -99,7 +108,9 @@ class SettingsScreen extends ConsumerWidget {
                     ListTile(
                       leading: const Icon(Icons.info_outline),
                       title: const Text('About PlayMate'),
-                      subtitle: const Text('Utilities, developer information & version'),
+                      subtitle: const Text(
+                        'Utilities, developer information & version',
+                      ),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () => context.push('/about'),
                     ),
@@ -133,14 +144,17 @@ class SettingsScreen extends ConsumerWidget {
                   builder: (context, ref, _) {
                     final packageInfoAsync = ref.watch(packageInfoProvider);
                     final version = packageInfoAsync.when(
-                      data: (info) => 'v${info.version} (Build ${info.buildNumber})',
-                      loading: () => 'v1.0.0',
-                      error: (err, stack) => 'v1.0.0',
+                      data: (info) => 'v${info.version}',
+                      loading: () => 'v1.0.2',
+                      error: (err, stack) => 'v1.0.2',
                     );
                     return Text(
                       'PLAYMATE $version\nEverything you need for offline games.\nDeveloped by Sundramdotdev',
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: theme.colorScheme.secondary, height: 1.5),
+                      style: TextStyle(
+                        color: theme.colorScheme.secondary,
+                        height: 1.5,
+                      ),
                     );
                   },
                 ),

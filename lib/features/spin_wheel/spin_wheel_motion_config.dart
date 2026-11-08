@@ -57,4 +57,3 @@ class SpinWheelMotionConfig {
   static const Curve spinCurve = Curves.easeOutCubic;
   static const Curve reducedMotionCurve = Curves.easeOutQuad;
 }
-

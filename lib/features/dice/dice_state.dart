@@ -1,4 +1,3 @@
-
 enum DiceType {
   d4(4),
   d6(6),

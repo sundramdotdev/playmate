@@ -69,8 +69,11 @@ class DiceFaceOrientation {
   static const DiceVec3 restingTilt = DiceVec3(-0.24, 0.28, 0.0);
 
   /// Normalized ambient light vector coming from the top-left-front.
-  static final DiceVec3 lightDirection =
-      const DiceVec3(-0.35, -0.65, -0.67).normalized();
+  static final DiceVec3 lightDirection = const DiceVec3(
+    -0.35,
+    -0.65,
+    -0.67,
+  ).normalized();
 
   /// Canonical 6-face definitions on a unit cube with half-extent 1.0.
   /// Opposite faces sum to 7:
@@ -225,12 +228,14 @@ class DiceFaceOrientation {
       fullMatrix.multiply(rotMatrix);
       fullMatrix.multiply(localMatrix);
 
-      visible.add(VisibleDiceFace(
-        value: face.value,
-        depthZ: worldCenterZ,
-        lightIntensity: lightIntensity,
-        transform: fullMatrix,
-      ));
+      visible.add(
+        VisibleDiceFace(
+          value: face.value,
+          depthZ: worldCenterZ,
+          lightIntensity: lightIntensity,
+          transform: fullMatrix,
+        ),
+      );
     }
 
     // Sort by depth for painter's algorithm:

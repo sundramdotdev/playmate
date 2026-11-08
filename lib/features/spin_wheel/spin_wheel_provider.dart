@@ -30,7 +30,9 @@ class SpinWheelState {
   }) {
     return SpinWheelState(
       options: options ?? this.options,
-      selectedWinner: clearWinner ? null : (selectedWinner ?? this.selectedWinner),
+      selectedWinner: clearWinner
+          ? null
+          : (selectedWinner ?? this.selectedWinner),
       isSpinning: isSpinning ?? this.isSpinning,
       history: history ?? this.history,
       activePresetId: activePresetId ?? this.activePresetId,
@@ -48,12 +50,14 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
   final Random _random = Random();
 
   SpinWheelNotifier()
-      : super(SpinWheelState(
+    : super(
+        SpinWheelState(
           options: SpinWheelPreset.builtInPresets.first.toOptions(),
           isSpinning: false,
           history: const [],
           activePresetId: 'truth_or_dare',
-        )) {
+        ),
+      ) {
     _loadPersistedData();
   }
 
@@ -67,7 +71,9 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
     if (savedOptionsRaw != null && savedOptionsRaw.isNotEmpty) {
       try {
         loadedOptions = savedOptionsRaw
-            .map((e) => WheelOption.fromJson(Map<String, dynamic>.from(e as Map)))
+            .map(
+              (e) => WheelOption.fromJson(Map<String, dynamic>.from(e as Map)),
+            )
             .toList();
       } catch (_) {
         loadedOptions = null;
@@ -80,7 +86,10 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
     if (savedHistoryRaw != null) {
       try {
         loadedHistory = savedHistoryRaw
-            .map((e) => SpinWheelRecord.fromJson(Map<String, dynamic>.from(e as Map)))
+            .map(
+              (e) =>
+                  SpinWheelRecord.fromJson(Map<String, dynamic>.from(e as Map)),
+            )
             .toList();
       } catch (_) {
         loadedHistory = [];
@@ -88,7 +97,8 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
     }
 
     final String savedPresetId =
-        box.get('spin_wheel_active_preset', defaultValue: 'truth_or_dare') as String;
+        box.get('spin_wheel_active_preset', defaultValue: 'truth_or_dare')
+            as String;
 
     if (loadedOptions != null && loadedOptions.length >= 2) {
       state = state.copyWith(
@@ -105,7 +115,9 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
   }
 
   Future<void> _persistOptions() async {
-    if (!mounted || !StorageService.isBoxOpen(StorageService.statsBoxName)) return;
+    if (!mounted || !StorageService.isBoxOpen(StorageService.statsBoxName)) {
+      return;
+    }
     final box = StorageService.getStatsBox();
     await box.put(
       'spin_wheel_options',
@@ -116,7 +128,9 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
   }
 
   Future<void> _persistHistory() async {
-    if (!mounted || !StorageService.isBoxOpen(StorageService.statsBoxName)) return;
+    if (!mounted || !StorageService.isBoxOpen(StorageService.statsBoxName)) {
+      return;
+    }
     final box = StorageService.getStatsBox();
     await box.put(
       'spin_wheel_history',
@@ -130,7 +144,9 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
   void addOption(String label) {
     final trimmed = label.trim();
     if (trimmed.isEmpty) return;
-    if (state.options.length >= 16) return; // Prevent unreasonable segment squeeze
+    if (state.options.length >= 16) {
+      return; // Prevent unreasonable segment squeeze
+    }
 
     final newOption = WheelOption(
       id: 'opt_${DateTime.now().microsecondsSinceEpoch}',
@@ -156,10 +172,7 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
       return opt;
     }).toList();
 
-    state = state.copyWith(
-      options: updated,
-      activePresetId: 'custom',
-    );
+    state = state.copyWith(options: updated, activePresetId: 'custom');
     _persistOptions();
   }
 
@@ -216,10 +229,7 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
     final WheelOption chosenWinner = state.options[winnerIndex];
 
     // 2. Publish target winner immediately so the renderer targets this sector
-    state = state.copyWith(
-      isSpinning: true,
-      selectedWinner: chosenWinner,
-    );
+    state = state.copyWith(isSpinning: true, selectedWinner: chosenWinner);
 
     // 3. Await duration matching the physical spin timeline
     await Future.delayed(SpinWheelMotionConfig.spinDuration);
@@ -230,7 +240,8 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
       timestamp: DateTime.now(),
     );
 
-    final updatedHistory = List<SpinWheelRecord>.from(state.history)..insert(0, record);
+    final updatedHistory = List<SpinWheelRecord>.from(state.history)
+      ..insert(0, record);
     if (updatedHistory.length > 50) {
       updatedHistory.removeLast();
     }
@@ -261,5 +272,5 @@ class SpinWheelNotifier extends StateNotifier<SpinWheelState> {
 
 final spinWheelProvider =
     StateNotifierProvider<SpinWheelNotifier, SpinWheelState>((ref) {
-  return SpinWheelNotifier();
-});
+      return SpinWheelNotifier();
+    });

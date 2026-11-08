@@ -127,7 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ];
 
-    final favoriteTools = allTools.where((t) => _favoriteToolIds.contains(t.id)).toList();
+    final favoriteTools = allTools
+        .where((t) => _favoriteToolIds.contains(t.id))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -148,10 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: AppSpacing.s),
             const Text(
               'PLAYMATE',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                letterSpacing: 0.5,
-              ),
+              style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5),
             ),
           ],
         ),
@@ -204,10 +203,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: favoriteTools.length,
-                      separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.s),
+                      separatorBuilder: (_, _) =>
+                          const SizedBox(width: AppSpacing.s),
                       itemBuilder: (context, index) {
                         final tool = favoriteTools[index];
-                        return _buildQuickAccessChip(context, tool, theme, isDark);
+                        return _buildQuickAccessChip(
+                          context,
+                          tool,
+                          theme,
+                          isDark,
+                        );
                       },
                     ),
                   ),
@@ -250,7 +255,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     final tool = allTools[index];
                     final isFavorite = _favoriteToolIds.contains(tool.id);
-                    return _buildToolCard(context, tool, isFavorite, theme, isDark);
+                    return _buildToolCard(
+                      context,
+                      tool,
+                      isFavorite,
+                      theme,
+                      isDark,
+                    );
                   },
                 ),
                 const SizedBox(height: AppSpacing.xl),
@@ -262,7 +273,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildQuickPlayBar(BuildContext context, ThemeData theme, bool isDark) {
+  Widget _buildQuickPlayBar(
+    BuildContext context,
+    ThemeData theme,
+    bool isDark,
+  ) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.m),
       decoration: BoxDecoration(
@@ -277,11 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.bolt,
-                size: 18,
-                color: theme.colorScheme.primary,
-              ),
+              Icon(Icons.bolt, size: 18, color: theme.colorScheme.primary),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 'QUICK START',
@@ -368,11 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Row(
               children: [
-                Icon(
-                  tool.icon,
-                  size: 22,
-                  color: theme.colorScheme.primary,
-                ),
+                Icon(tool.icon, size: 22, color: theme.colorScheme.primary),
                 const Spacer(),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -443,9 +450,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     constraints: const BoxConstraints(),
                     icon: Icon(
                       isFavorite ? Icons.star : Icons.star_border,
-                      color: isFavorite ? Colors.amber[700] : theme.colorScheme.secondary,
+                      color: isFavorite
+                          ? Colors.amber[700]
+                          : theme.colorScheme.secondary,
                     ),
-                    tooltip: isFavorite ? 'Unpin from quick access' : 'Pin to quick access',
+                    tooltip: isFavorite
+                        ? 'Unpin from quick access'
+                        : 'Pin to quick access',
                     onPressed: () => _toggleFavorite(tool.id),
                   ),
                 ],
@@ -463,7 +474,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 tool.desc,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: isDark ? const Color(0xFFA0A0A0) : const Color(0xFF666666),
+                  color: isDark
+                      ? const Color(0xFFA0A0A0)
+                      : const Color(0xFF666666),
                   height: 1.3,
                 ),
                 maxLines: 2,

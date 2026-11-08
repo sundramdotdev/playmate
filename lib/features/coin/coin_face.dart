@@ -115,9 +115,8 @@ class _CoinFacePainter extends CustomPainter {
   void _drawEngravedRims(Canvas canvas, Offset center, double radius) {
     // Outer engraved trench rim
     final outerRingPaint = Paint()
-      ..color = (isDarkMode ? Colors.black : const Color(0xFFC8C4B8)).withValues(
-        alpha: (isDarkMode ? 0.7 : 0.5) * lightIntensity,
-      )
+      ..color = (isDarkMode ? Colors.black : const Color(0xFFC8C4B8))
+          .withValues(alpha: (isDarkMode ? 0.7 : 0.5) * lightIntensity)
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.035;
     canvas.drawCircle(center, radius * 0.90, outerRingPaint);
@@ -150,10 +149,12 @@ class _CoinFacePainter extends CustomPainter {
       final double innerAngle = outerAngle + (math.pi / 4);
 
       final ox = center.dx + starRadius * math.cos(outerAngle);
-      final oy = center.dy - (radius * 0.04) + starRadius * math.sin(outerAngle);
+      final oy =
+          center.dy - (radius * 0.04) + starRadius * math.sin(outerAngle);
 
       final ix = center.dx + innerRadius * math.cos(innerAngle);
-      final iy = center.dy - (radius * 0.04) + innerRadius * math.sin(innerAngle);
+      final iy =
+          center.dy - (radius * 0.04) + innerRadius * math.sin(innerAngle);
 
       if (i == 0) {
         starPath.moveTo(ox, oy);
@@ -187,7 +188,12 @@ class _CoinFacePainter extends CustomPainter {
     );
 
     // Micro text label "HEADS"
-    _drawMicroLabel(canvas, 'HEADS', Offset(center.dx, center.dy + radius * 0.48), radius * 0.125);
+    _drawMicroLabel(
+      canvas,
+      'HEADS',
+      Offset(center.dx, center.dy + radius * 0.48),
+      radius * 0.125,
+    );
   }
 
   void _drawTailsBranding(Canvas canvas, Offset center, double radius) {
@@ -204,10 +210,12 @@ class _CoinFacePainter extends CustomPainter {
     final loopRadius = monogramWidth - stemWidth;
 
     // Vertical stem
-    path.addRRect(RRect.fromRectAndRadius(
-      Rect.fromLTWH(topLeft.dx, topLeft.dy, stemWidth, monogramHeight),
-      Radius.circular(stemWidth * 0.4),
-    ));
+    path.addRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(topLeft.dx, topLeft.dy, stemWidth, monogramHeight),
+        Radius.circular(stemWidth * 0.4),
+      ),
+    );
 
     // Upper semi-circle loop
     final loopRect = Rect.fromLTWH(
@@ -216,7 +224,10 @@ class _CoinFacePainter extends CustomPainter {
       monogramWidth,
       monogramHeight * 0.58,
     );
-    final loopRRect = RRect.fromRectAndRadius(loopRect, Radius.circular(loopRadius * 0.7));
+    final loopRRect = RRect.fromRectAndRadius(
+      loopRect,
+      Radius.circular(loopRadius * 0.7),
+    );
     final innerLoopRRect = RRect.fromRectAndRadius(
       Rect.fromLTWH(
         topLeft.dx + stemWidth,
@@ -251,16 +262,29 @@ class _CoinFacePainter extends CustomPainter {
       ..color = accentColor
       ..style = PaintingStyle.fill;
     canvas.drawCircle(
-      Offset(topLeft.dx + stemWidth + loopRadius * 0.45, topLeft.dy + monogramHeight * 0.29),
+      Offset(
+        topLeft.dx + stemWidth + loopRadius * 0.45,
+        topLeft.dy + monogramHeight * 0.29,
+      ),
       radius * 0.05,
       bronzeSparkPaint,
     );
 
     // Micro text label "TAILS"
-    _drawMicroLabel(canvas, 'TAILS', Offset(center.dx, center.dy + radius * 0.48), radius * 0.125);
+    _drawMicroLabel(
+      canvas,
+      'TAILS',
+      Offset(center.dx, center.dy + radius * 0.48),
+      radius * 0.125,
+    );
   }
 
-  void _drawMicroLabel(Canvas canvas, String text, Offset position, double fontSize) {
+  void _drawMicroLabel(
+    Canvas canvas,
+    String text,
+    Offset position,
+    double fontSize,
+  ) {
     final textSpan = TextSpan(
       text: text,
       style: TextStyle(
@@ -278,7 +302,10 @@ class _CoinFacePainter extends CustomPainter {
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(position.dx - textPainter.width / 2, position.dy - textPainter.height / 2),
+      Offset(
+        position.dx - textPainter.width / 2,
+        position.dy - textPainter.height / 2,
+      ),
     );
   }
 

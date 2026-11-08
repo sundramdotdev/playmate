@@ -68,7 +68,9 @@ class _CoinScreenState extends ConsumerState<CoinScreen> {
                       LayoutBuilder(
                         builder: (context, constraints) {
                           final double availableWidth = constraints.maxWidth;
-                          final double coinSize = _calculateResponsiveCoinSize(availableWidth);
+                          final double coinSize = _calculateResponsiveCoinSize(
+                            availableWidth,
+                          );
 
                           return Center(
                             child: PlayMateCoin(
@@ -93,7 +95,11 @@ class _CoinScreenState extends ConsumerState<CoinScreen> {
                         _buildStatsSummary(coinState, theme, isDarkMode),
                         const SizedBox(height: 14),
                         // Compact recent toss history
-                        _buildRecentHistorySection(coinState, theme, isDarkMode),
+                        _buildRecentHistorySection(
+                          coinState,
+                          theme,
+                          isDarkMode,
+                        ),
                       ],
                     ],
                   ),
@@ -179,7 +185,11 @@ class _CoinScreenState extends ConsumerState<CoinScreen> {
     );
   }
 
-  Widget _buildStatsSummary(CoinState coinState, ThemeData theme, bool isDarkMode) {
+  Widget _buildStatsSummary(
+    CoinState coinState,
+    ThemeData theme,
+    bool isDarkMode,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
@@ -246,11 +256,7 @@ class _CoinScreenState extends ConsumerState<CoinScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.history,
-              size: 15,
-              color: theme.colorScheme.secondary,
-            ),
+            Icon(Icons.history, size: 15, color: theme.colorScheme.secondary),
             const SizedBox(width: 6),
             Text(
               'Recent Tosses',
@@ -276,16 +282,25 @@ class _CoinScreenState extends ConsumerState<CoinScreen> {
               return Padding(
                 padding: const EdgeInsets.only(right: 6.0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     color: isLatest
-                        ? (isDarkMode ? const Color(0xFF2C2C2E) : const Color(0xFFEBEBEB))
-                        : (isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFF5F5F5)),
+                        ? (isDarkMode
+                              ? const Color(0xFF2C2C2E)
+                              : const Color(0xFFEBEBEB))
+                        : (isDarkMode
+                              ? const Color(0xFF1E1E1E)
+                              : const Color(0xFFF5F5F5)),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: isLatest
                           ? const Color(0xFFC18A42).withValues(alpha: 0.4)
-                          : (isDarkMode ? const Color(0xFF2C2C2C) : const Color(0xFFE0E0E0)),
+                          : (isDarkMode
+                                ? const Color(0xFF2C2C2C)
+                                : const Color(0xFFE0E0E0)),
                       width: 1.0,
                     ),
                   ),
@@ -307,9 +322,13 @@ class _CoinScreenState extends ConsumerState<CoinScreen> {
                         side == CoinSide.heads ? 'H' : 'T',
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: isLatest ? FontWeight.bold : FontWeight.w600,
+                          fontWeight: isLatest
+                              ? FontWeight.bold
+                              : FontWeight.w600,
                           color: isLatest
-                              ? (isDarkMode ? Colors.white : const Color(0xFF1A1A1A))
+                              ? (isDarkMode
+                                    ? Colors.white
+                                    : const Color(0xFF1A1A1A))
                               : theme.colorScheme.secondary,
                         ),
                       ),
@@ -329,9 +348,7 @@ class _CoinScreenState extends ConsumerState<CoinScreen> {
       padding: const EdgeInsets.all(AppSpacing.m),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        border: Border(
-          top: BorderSide(color: theme.dividerColor, width: 1),
-        ),
+        border: Border(top: BorderSide(color: theme.dividerColor, width: 1)),
       ),
       child: SafeArea(
         top: false,
@@ -342,7 +359,9 @@ class _CoinScreenState extends ConsumerState<CoinScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: theme.colorScheme.primary,
               foregroundColor: theme.colorScheme.onPrimary,
-              disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.5),
+              disabledBackgroundColor: theme.colorScheme.primary.withValues(
+                alpha: 0.5,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),

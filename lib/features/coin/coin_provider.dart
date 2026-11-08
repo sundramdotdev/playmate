@@ -40,11 +40,13 @@ class CoinNotifier extends StateNotifier<CoinState> {
   final Random _random = Random();
 
   CoinNotifier()
-      : super(CoinState(
+    : super(
+        CoinState(
           lastResult: CoinSide.heads,
           isFlipping: false,
           tossHistory: [],
-        )) {
+        ),
+      ) {
     _loadHistory();
   }
 
@@ -54,10 +56,12 @@ class CoinNotifier extends StateNotifier<CoinState> {
     final List<dynamic>? historyRaw = box.get('coin_history');
     if (historyRaw != null) {
       final history = historyRaw
-          .map((e) => CoinSide.values.firstWhere(
-                (element) => element.name == e,
-                orElse: () => CoinSide.heads,
-              ))
+          .map(
+            (e) => CoinSide.values.firstWhere(
+              (element) => element.name == e,
+              orElse: () => CoinSide.heads,
+            ),
+          )
           .toList();
       state = state.copyWith(tossHistory: history);
     }
@@ -80,27 +84,24 @@ class CoinNotifier extends StateNotifier<CoinState> {
     if (state.isFlipping) return;
 
     // 1. Generate authoritative logical result first
-    final CoinSide result = _random.nextBool() ? CoinSide.heads : CoinSide.tails;
+    final CoinSide result = _random.nextBool()
+        ? CoinSide.heads
+        : CoinSide.tails;
 
     // 2. Publish target result immediately so visual renderer computes target orientation
-    state = state.copyWith(
-      lastResult: result,
-      isFlipping: true,
-    );
+    state = state.copyWith(lastResult: result, isFlipping: true);
 
     // 3. Await duration matching physical 3D animation timeline
     await Future.delayed(CoinMotionConfig.flipDuration);
 
     // 4. Update history upon settling
-    final updatedHistory = List<CoinSide>.from(state.tossHistory)..insert(0, result);
+    final updatedHistory = List<CoinSide>.from(state.tossHistory)
+      ..insert(0, result);
     if (updatedHistory.length > 50) {
       updatedHistory.removeLast();
     }
 
-    state = state.copyWith(
-      isFlipping: false,
-      tossHistory: updatedHistory,
-    );
+    state = state.copyWith(isFlipping: false, tossHistory: updatedHistory);
 
     // Save history & statistics in storage
     if (StorageService.isBoxOpen(StorageService.statsBoxName)) {

@@ -96,10 +96,13 @@ class ScoreTrackerNotifier extends StateNotifier<MatchScore?> {
   }
 
   void undoLastAction() {
-    if (state == null || state!.scoreHistory.isEmpty || state!.isCompleted) return;
+    if (state == null || state!.scoreHistory.isEmpty || state!.isCompleted) {
+      return;
+    }
 
     final previousScores = state!.scoreHistory.last;
-    final updatedHistory = List<List<int>>.from(state!.scoreHistory)..removeLast();
+    final updatedHistory = List<List<int>>.from(state!.scoreHistory)
+      ..removeLast();
 
     state = state!.copyWith(
       teamAScore: previousScores[0],
@@ -114,8 +117,9 @@ class ScoreTrackerNotifier extends StateNotifier<MatchScore?> {
 
     // Save to matches history
     final box = StorageService.getMatchBox();
-    final List<dynamic> history = box.get('score_matches', defaultValue: []) as List<dynamic>;
-    
+    final List<dynamic> history =
+        box.get('score_matches', defaultValue: []) as List<dynamic>;
+
     final match = {
       'date': DateTime.now().toIso8601String(),
       'type': 'Score Tracker',
@@ -124,8 +128,8 @@ class ScoreTrackerNotifier extends StateNotifier<MatchScore?> {
       'teamB': state!.teamBName,
       'scoreA': state!.teamAScore,
       'scoreB': state!.teamBScore,
-      'winner': state!.teamAScore > state!.teamBScore 
-          ? state!.teamAName 
+      'winner': state!.teamAScore > state!.teamBScore
+          ? state!.teamAName
           : (state!.teamAScore < state!.teamBScore ? state!.teamBName : 'Tie'),
     };
 
@@ -137,6 +141,7 @@ class ScoreTrackerNotifier extends StateNotifier<MatchScore?> {
   }
 }
 
-final scoreTrackerProvider = StateNotifierProvider<ScoreTrackerNotifier, MatchScore?>((ref) {
-  return ScoreTrackerNotifier();
-});
+final scoreTrackerProvider =
+    StateNotifierProvider<ScoreTrackerNotifier, MatchScore?>((ref) {
+      return ScoreTrackerNotifier();
+    });

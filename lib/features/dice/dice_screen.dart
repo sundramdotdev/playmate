@@ -33,7 +33,8 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
               event.x * event.x + event.y * event.y + event.z * event.z;
           if (acceleration > 190) {
             final now = DateTime.now();
-            if (now.difference(_lastShakeTime) > const Duration(milliseconds: 1100)) {
+            if (now.difference(_lastShakeTime) >
+                const Duration(milliseconds: 1100)) {
               _lastShakeTime = now;
               _triggerRoll();
             }
@@ -232,11 +233,7 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.history,
-              size: 15,
-              color: theme.colorScheme.secondary,
-            ),
+            Icon(Icons.history, size: 15, color: theme.colorScheme.secondary),
             const SizedBox(width: 6),
             Text(
               'Recent Rolls',
@@ -260,21 +257,32 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
               final sum = roll.fold(0, (prev, element) => prev + element);
               final isLatest = index == 0;
 
-              final label = roll.length == 1 ? '$sum' : '$sum (${roll.join('+')})';
+              final label = roll.length == 1
+                  ? '$sum'
+                  : '$sum (${roll.join('+')})';
 
               return Padding(
                 padding: const EdgeInsets.only(right: 6.0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     color: isLatest
-                        ? (isDarkMode ? const Color(0xFF2C2C2E) : const Color(0xFFEBEBEB))
-                        : (isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFF5F5F5)),
+                        ? (isDarkMode
+                              ? const Color(0xFF2C2C2E)
+                              : const Color(0xFFEBEBEB))
+                        : (isDarkMode
+                              ? const Color(0xFF1E1E1E)
+                              : const Color(0xFFF5F5F5)),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: isLatest
                           ? const Color(0xFFC18A42).withValues(alpha: 0.4)
-                          : (isDarkMode ? const Color(0xFF2C2C2C) : const Color(0xFFE0E0E0)),
+                          : (isDarkMode
+                                ? const Color(0xFF2C2C2C)
+                                : const Color(0xFFE0E0E0)),
                       width: 1.0,
                     ),
                   ),
@@ -284,7 +292,9 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
                       fontSize: 12,
                       fontWeight: isLatest ? FontWeight.bold : FontWeight.w500,
                       color: isLatest
-                          ? (isDarkMode ? Colors.white : const Color(0xFF1A1A1A))
+                          ? (isDarkMode
+                                ? Colors.white
+                                : const Color(0xFF1A1A1A))
                           : theme.colorScheme.secondary,
                     ),
                   ),
@@ -302,9 +312,7 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
       padding: const EdgeInsets.all(AppSpacing.m),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        border: Border(
-          top: BorderSide(color: theme.dividerColor, width: 1),
-        ),
+        border: Border(top: BorderSide(color: theme.dividerColor, width: 1)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -333,11 +341,17 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.remove, size: 18),
-                      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                      constraints: const BoxConstraints(
+                        minWidth: 32,
+                        minHeight: 32,
+                      ),
                       padding: EdgeInsets.zero,
                       visualDensity: VisualDensity.compact,
-                      onPressed: (!diceState.isRolling && diceState.diceCount > 1)
-                          ? () => ref.read(diceProvider.notifier).setDiceCount(diceState.diceCount - 1)
+                      onPressed:
+                          (!diceState.isRolling && diceState.diceCount > 1)
+                          ? () => ref
+                                .read(diceProvider.notifier)
+                                .setDiceCount(diceState.diceCount - 1)
                           : null,
                     ),
                     Padding(
@@ -351,11 +365,17 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.add, size: 18),
-                      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                      constraints: const BoxConstraints(
+                        minWidth: 32,
+                        minHeight: 32,
+                      ),
                       padding: EdgeInsets.zero,
                       visualDensity: VisualDensity.compact,
-                      onPressed: (!diceState.isRolling && diceState.diceCount < 6)
-                          ? () => ref.read(diceProvider.notifier).setDiceCount(diceState.diceCount + 1)
+                      onPressed:
+                          (!diceState.isRolling && diceState.diceCount < 6)
+                          ? () => ref
+                                .read(diceProvider.notifier)
+                                .setDiceCount(diceState.diceCount + 1)
                           : null,
                     ),
                   ],
@@ -401,7 +421,9 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: theme.colorScheme.onPrimary,
-                disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.5),
+                disabledBackgroundColor: theme.colorScheme.primary.withValues(
+                  alpha: 0.5,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),

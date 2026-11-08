@@ -9,18 +9,14 @@ import 'services/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Fast storage bootstrap for instantaneous frame rendering
   await StorageService.initialize();
 
   // Asynchronous background telemetry initialization (non-blocking for splash)
   unawaited(FirebaseService.initialize());
 
-  runApp(
-    const ProviderScope(
-      child: PlaymateApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: PlaymateApp()));
 }
 
 class PlaymateApp extends ConsumerWidget {

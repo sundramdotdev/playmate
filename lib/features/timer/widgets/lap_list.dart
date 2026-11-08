@@ -5,10 +5,7 @@ import '../domain/timer_models.dart';
 class LapList extends StatelessWidget {
   final List<StopwatchLap> laps;
 
-  const LapList({
-    super.key,
-    required this.laps,
-  });
+  const LapList({super.key, required this.laps});
 
   String _formatLapTime(Duration d) {
     final minutes = (d.inMinutes % 60).toString().padLeft(2, '0');
@@ -101,7 +98,10 @@ class LapList extends StatelessWidget {
                 if (isSlowest) splitColor = Colors.orangeAccent.shade400;
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
