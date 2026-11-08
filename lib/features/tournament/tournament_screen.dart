@@ -55,7 +55,11 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
     final allowedCounts = [4, 8, 16, 32];
     final remaining = allowedCounts.contains(tourState.teams.length)
         ? 0
-        : allowedCounts.firstWhere((e) => e > tourState.teams.length, orElse: () => 32) - tourState.teams.length;
+        : allowedCounts.firstWhere(
+                (e) => e > tourState.teams.length,
+                orElse: () => 32,
+              ) -
+              tourState.teams.length;
 
     return Column(
       children: [
@@ -86,7 +90,9 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
             child: Text(
               'Add $remaining more team(s) to hit the next valid bracket (4, 8, 16, or 32)',
-              style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.secondary),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.secondary,
+              ),
             ),
           ),
         Expanded(
@@ -99,7 +105,8 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
                 title: Text(team),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline),
-                  onPressed: () => ref.read(tournamentProvider.notifier).removeTeam(team),
+                  onPressed: () =>
+                      ref.read(tournamentProvider.notifier).removeTeam(team),
                 ),
               );
             },
@@ -114,12 +121,18 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: theme.colorScheme.onPrimary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onPressed: remaining == 0 && tourState.teams.isNotEmpty
-                  ? () => ref.read(tournamentProvider.notifier).generateBrackets()
+                  ? () =>
+                        ref.read(tournamentProvider.notifier).generateBrackets()
                   : null,
-              child: const Text('GENERATE BRACKET', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text(
+                'GENERATE BRACKET',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),
@@ -140,7 +153,9 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
               Text('CHAMPION!', style: theme.textTheme.headlineMedium),
               Text(
                 tourState.champion!,
-                style: theme.textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.headlineLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: AppSpacing.l),
               ElevatedButton(
@@ -165,7 +180,9 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.s),
               child: Text(
                 'Round ${roundIndex + 1}',
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             ...List.generate(round.matches.length, (matchIndex) {
@@ -185,16 +202,30 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildTeamAdvanceRow(teamA, winner, roundIndex, matchIndex, theme),
+                          _buildTeamAdvanceRow(
+                            teamA,
+                            winner,
+                            roundIndex,
+                            matchIndex,
+                            theme,
+                          ),
                           const SizedBox(height: AppSpacing.s),
-                          _buildTeamAdvanceRow(teamB, winner, roundIndex, matchIndex, theme),
+                          _buildTeamAdvanceRow(
+                            teamB,
+                            winner,
+                            roundIndex,
+                            matchIndex,
+                            theme,
+                          ),
                         ],
                       ),
                       if (winner.isEmpty && teamA != 'TBD' && teamB != 'TBD')
                         Text(
                           'Select winner',
-                          style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.secondary),
-                        )
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.secondary,
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -219,10 +250,15 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
 
     return InkWell(
       onTap: isClickable
-          ? () => ref.read(tournamentProvider.notifier).advanceWinner(roundIndex, matchIndex, team)
+          ? () => ref
+                .read(tournamentProvider.notifier)
+                .advanceWinner(roundIndex, matchIndex, team)
           : null,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s, vertical: AppSpacing.xs),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.s,
+          vertical: AppSpacing.xs,
+        ),
         child: Row(
           children: [
             Icon(
@@ -235,7 +271,9 @@ class _TournamentScreenState extends ConsumerState<TournamentScreen> {
               team,
               style: theme.textTheme.bodyLarge?.copyWith(
                 fontWeight: isWinner ? FontWeight.bold : FontWeight.normal,
-                decoration: winner.isNotEmpty && !isWinner ? TextDecoration.lineThrough : null,
+                decoration: winner.isNotEmpty && !isWinner
+                    ? TextDecoration.lineThrough
+                    : null,
               ),
             ),
           ],

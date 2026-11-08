@@ -11,9 +11,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Privacy Policy'),
-      ),
+      appBar: AppBar(title: const Text('Privacy Policy')),
       body: SafeArea(
         child: ResponsiveLayout(
           mobile: SingleChildScrollView(
@@ -21,10 +19,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Privacy Policy',
-                  style: theme.textTheme.headlineMedium,
-                ),
+                Text('Privacy Policy', style: theme.textTheme.headlineMedium),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Last Updated: October 2026',
@@ -113,9 +108,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           Linkify(
             onOpen: (link) => openExternalUrl(link.url),
             text: body,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              height: 1.5,
-            ),
+            style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
             linkStyle: TextStyle(
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,

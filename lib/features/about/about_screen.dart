@@ -15,20 +15,18 @@ class AboutScreen extends ConsumerWidget {
 
     final String versionText = packageInfoAsync.when(
       data: (info) => info.version,
-      loading: () => '1.1.0',
-      error: (err, stack) => '1.1.0',
+      loading: () => '1.0.2',
+      error: (err, stack) => '1.0.2',
     );
 
     final String buildText = packageInfoAsync.when(
       data: (info) => info.buildNumber,
-      loading: () => '2',
-      error: (err, stack) => '2',
+      loading: () => '3',
+      error: (err, stack) => '3',
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('About PlayMate'),
-      ),
+      appBar: AppBar(title: const Text('About PlayMate')),
       body: SafeArea(
         child: ResponsiveLayout(
           mobile: SingleChildScrollView(
@@ -48,7 +46,9 @@ class AboutScreen extends ConsumerWidget {
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                                color: theme.colorScheme.primary.withValues(
+                                  alpha: 0.1,
+                                ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
@@ -64,17 +64,19 @@ class AboutScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     'PlayMate',
-                                    style: theme.textTheme.headlineLarge?.copyWith(
-                                      fontWeight: FontWeight.w900,
-                                      letterSpacing: -0.5,
-                                    ),
+                                    style: theme.textTheme.headlineLarge
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: -0.5,
+                                        ),
                                   ),
                                   Text(
                                     'Everything you need for offline games.',
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      color: theme.colorScheme.secondary,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(
+                                          color: theme.colorScheme.secondary,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -151,7 +153,8 @@ class AboutScreen extends ConsumerWidget {
                           title: const Text('Official Website'),
                           subtitle: const Text('sundramdotdev.xyz'),
                           trailing: const Icon(Icons.open_in_new, size: 18),
-                          onTap: () => ExternalLinks.openUrl(ExternalLinks.websiteUrl),
+                          onTap: () =>
+                              ExternalLinks.openUrl(ExternalLinks.websiteUrl),
                         ),
                         const Divider(height: 1),
                         ListTile(
@@ -160,7 +163,8 @@ class AboutScreen extends ConsumerWidget {
                           title: const Text('GitHub'),
                           subtitle: const Text('github.com/sundramdotdev'),
                           trailing: const Icon(Icons.open_in_new, size: 18),
-                          onTap: () => ExternalLinks.openUrl(ExternalLinks.githubUrl),
+                          onTap: () =>
+                              ExternalLinks.openUrl(ExternalLinks.githubUrl),
                         ),
                         const Divider(height: 1),
                         ListTile(
@@ -169,16 +173,21 @@ class AboutScreen extends ConsumerWidget {
                           title: const Text('LinkedIn'),
                           subtitle: const Text('linkedin.com/in/sundramdotdev'),
                           trailing: const Icon(Icons.open_in_new, size: 18),
-                          onTap: () => ExternalLinks.openUrl(ExternalLinks.linkedinUrl),
+                          onTap: () =>
+                              ExternalLinks.openUrl(ExternalLinks.linkedinUrl),
                         ),
                         const Divider(height: 1),
                         ListTile(
                           contentPadding: EdgeInsets.zero,
                           leading: const Icon(Icons.folder_zip_outlined),
                           title: const Text('PlayMate Repository'),
-                          subtitle: const Text('github.com/sundramdotdev/playmate'),
+                          subtitle: const Text(
+                            'github.com/sundramdotdev/playmate',
+                          ),
                           trailing: const Icon(Icons.open_in_new, size: 18),
-                          onTap: () => ExternalLinks.openUrl(ExternalLinks.repositoryUrl),
+                          onTap: () => ExternalLinks.openUrl(
+                            ExternalLinks.repositoryUrl,
+                          ),
                         ),
                         const Divider(height: 1),
                         ListTile(
@@ -187,7 +196,8 @@ class AboutScreen extends ConsumerWidget {
                           title: const Text('Instagram'),
                           subtitle: const Text('@devsundram_'),
                           trailing: const Icon(Icons.open_in_new, size: 18),
-                          onTap: () => ExternalLinks.openUrl(ExternalLinks.instagramUrl),
+                          onTap: () =>
+                              ExternalLinks.openUrl(ExternalLinks.instagramUrl),
                         ),
                       ],
                     ),
@@ -201,7 +211,7 @@ class AboutScreen extends ConsumerWidget {
                     children: [
                       ListTile(
                         leading: const Icon(Icons.new_releases_outlined),
-                        title: const Text('What\'s New in 1.1.0'),
+                        title: const Text('What\'s New in 1.0.2'),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () => context.push('/changelog'),
                       ),

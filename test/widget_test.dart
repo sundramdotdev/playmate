@@ -6,6 +6,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:playmate/core/theme.dart';
 import 'package:playmate/routes/router.dart';
 
+import 'package:playmate/services/storage_service.dart';
+
 void main() {
   setUpAll(() async {
     // Initialize Hive for testing with an in-memory path
@@ -14,6 +16,7 @@ void main() {
     await Hive.openBox('matches');
     await Hive.openBox('achievements');
     await Hive.openBox('statistics');
+    await StorageService.setCompletedOnboarding(true);
   });
 
   tearDownAll(() async {
@@ -44,7 +47,9 @@ void main() {
     expect(find.text('Score Tracker'), findsWidgets);
   });
 
-  testWidgets('Dice Roller screen navigates correctly', (WidgetTester tester) async {
+  testWidgets('Dice Roller screen navigates correctly', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp.router(

@@ -24,12 +24,30 @@ class AppTheme {
         margin: EdgeInsets.zero,
       ),
       textTheme: const TextTheme(
-        headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: -0.5, color: Color(0xFF1A1A1A)),
-        headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: -0.5, color: Color(0xFF1A1A1A)),
-        titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Color(0xFF1A1A1A)),
+        headlineLarge: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
+          color: Color(0xFF1A1A1A),
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
+          color: Color(0xFF1A1A1A),
+        ),
+        titleLarge: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF1A1A1A),
+        ),
         bodyLarge: TextStyle(fontSize: 16, color: Color(0xFF2C2C2C)),
         bodyMedium: TextStyle(fontSize: 14, color: Color(0xFF4A4A4A)),
-        labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
+        labelLarge: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFF1A1A1A),
+        ),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.white,
@@ -68,12 +86,30 @@ class AppTheme {
         margin: EdgeInsets.zero,
       ),
       textTheme: const TextTheme(
-        headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: -0.5, color: Colors.white),
-        headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: -0.5, color: Colors.white),
-        titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+        headlineLarge: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
+          color: Colors.white,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
+          color: Colors.white,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
         bodyLarge: TextStyle(fontSize: 16, color: Color(0xFFE0E0E0)),
         bodyMedium: TextStyle(fontSize: 14, color: Color(0xFFA0A0A0)),
-        labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+        labelLarge: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF121212),

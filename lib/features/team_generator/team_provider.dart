@@ -34,12 +34,15 @@ class TeamGeneratorState {
 class TeamNotifier extends StateNotifier<TeamGeneratorState> {
   final Random _random = Random();
 
-  TeamNotifier() : super(TeamGeneratorState(
-    players: [],
-    generatedTeams: [],
-    numberOfTeams: 2,
-    balanceRandomization: true,
-  )) {
+  TeamNotifier()
+    : super(
+        TeamGeneratorState(
+          players: [],
+          generatedTeams: [],
+          numberOfTeams: 2,
+          balanceRandomization: true,
+        ),
+      ) {
     _loadPlayers();
   }
 
@@ -75,7 +78,7 @@ class TeamNotifier extends StateNotifier<TeamGeneratorState> {
 
   void generateTeams() {
     if (state.players.isEmpty) return;
-    
+
     final shuffled = List<String>.from(state.players)..shuffle(_random);
     final teams = List.generate(state.numberOfTeams, (_) => <String>[]);
 
@@ -84,10 +87,11 @@ class TeamNotifier extends StateNotifier<TeamGeneratorState> {
     }
 
     state = state.copyWith(generatedTeams: teams);
-    
+
     // Save to matches history
     final box = StorageService.getMatchBox();
-    final List<dynamic> history = box.get('team_matches', defaultValue: []) as List<dynamic>;
+    final List<dynamic> history =
+        box.get('team_matches', defaultValue: []) as List<dynamic>;
     final match = {
       'date': DateTime.now().toIso8601String(),
       'type': 'Team Generator',
@@ -97,7 +101,10 @@ class TeamNotifier extends StateNotifier<TeamGeneratorState> {
     box.put('team_matches', [...history, match]);
 
     // Analytics
-    AnalyticsService.trackTeamGenerated(state.numberOfTeams, state.players.length);
+    AnalyticsService.trackTeamGenerated(
+      state.numberOfTeams,
+      state.players.length,
+    );
   }
 
   void clearAll() {
@@ -106,6 +113,8 @@ class TeamNotifier extends StateNotifier<TeamGeneratorState> {
   }
 }
 
-final teamProvider = StateNotifierProvider<TeamNotifier, TeamGeneratorState>((ref) {
+final teamProvider = StateNotifierProvider<TeamNotifier, TeamGeneratorState>((
+  ref,
+) {
   return TeamNotifier();
 });

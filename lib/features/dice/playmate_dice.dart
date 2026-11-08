@@ -49,7 +49,8 @@ class PlayMateDice extends StatefulWidget {
   State<PlayMateDice> createState() => _PlayMateDiceState();
 }
 
-class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMixin {
+class _PlayMateDiceState extends State<PlayMateDice>
+    with TickerProviderStateMixin {
   late AnimationController _rollController;
   late AnimationController _idleController;
   late AnimationController _pressController;
@@ -66,7 +67,9 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    _currentRotation = DiceFaceOrientation.getRestingEulerForValue(widget.value);
+    _currentRotation = DiceFaceOrientation.getRestingEulerForValue(
+      widget.value,
+    );
     _fromRotation = _currentRotation;
     _targetRotation = _currentRotation;
 
@@ -80,7 +83,8 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
       duration: DiceMotionConfig.idleCycleDuration,
     );
     // Do not continuously loop idle animation in tests to prevent pumpAndSettle timeout
-    final isTesting = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
+    final isTesting =
+        !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
     if (!isTesting) {
       _idleController.repeat();
     }
@@ -102,15 +106,21 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
   void didUpdateWidget(covariant PlayMateDice oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.value != oldWidget.value && !widget.isRolling && !_rollController.isAnimating) {
+    if (widget.value != oldWidget.value &&
+        !widget.isRolling &&
+        !_rollController.isAnimating) {
       setState(() {
-        _currentRotation = DiceFaceOrientation.getRestingEulerForValue(widget.value);
+        _currentRotation = DiceFaceOrientation.getRestingEulerForValue(
+          widget.value,
+        );
         _fromRotation = _currentRotation;
         _targetRotation = _currentRotation;
       });
     }
 
-    if (widget.isRolling && !oldWidget.isRolling && !_rollController.isAnimating) {
+    if (widget.isRolling &&
+        !oldWidget.isRolling &&
+        !_rollController.isAnimating) {
       _startRollSequence();
     }
   }
@@ -118,7 +128,9 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
   void _startRollSequence() {
     _fromRotation = _currentRotation;
 
-    final baseTarget = DiceFaceOrientation.getRestingEulerForValue(widget.value);
+    final baseTarget = DiceFaceOrientation.getRestingEulerForValue(
+      widget.value,
+    );
 
     final int revCountX = 2 + (widget.diceIndex % 2);
     final int revCountY = 3 + ((widget.diceIndex + 1) % 2);
@@ -190,7 +202,8 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
       final subT = t / DiceMotionConfig.anticipationEnd;
       return -0.015 * DiceMotionConfig.anticipationCurve.transform(subT);
     } else {
-      final subT = (t - DiceMotionConfig.anticipationEnd) /
+      final subT =
+          (t - DiceMotionConfig.anticipationEnd) /
           (1.0 - DiceMotionConfig.anticipationEnd);
       return Curves.easeOutCubic.transform(subT.clamp(0.0, 1.0));
     }
@@ -198,7 +211,9 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
 
   void _handleRollStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
-      final baseTarget = DiceFaceOrientation.getRestingEulerForValue(widget.value);
+      final baseTarget = DiceFaceOrientation.getRestingEulerForValue(
+        widget.value,
+      );
       setState(() {
         _currentRotation = baseTarget;
         _fromRotation = baseTarget;
@@ -237,8 +252,10 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final effectiveStyle = widget.style ?? DiceStyle.fromBrightness(theme.brightness);
-    final reducedMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final effectiveStyle =
+        widget.style ?? DiceStyle.fromBrightness(theme.brightness);
+    final reducedMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
 
     return Semantics(
       label: widget.isRolling
@@ -251,7 +268,11 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
         onTapUp: _onTapUp,
         onTapCancel: _onTapCancel,
         child: AnimatedBuilder(
-          animation: Listenable.merge([_rollController, _idleController, _pressController]),
+          animation: Listenable.merge([
+            _rollController,
+            _idleController,
+            _pressController,
+          ]),
           builder: (context, _) {
             final double rollT = _rollController.value;
             final double pressT = _pressController.value;
@@ -263,20 +284,29 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
                 final subT = rollT / DiceMotionConfig.anticipationEnd;
                 scale = _lerpDouble(1.0, DiceMotionConfig.pressScale, subT);
               } else if (rollT < DiceMotionConfig.launchEnd) {
-                final subT = (rollT - DiceMotionConfig.anticipationEnd) /
-                    (DiceMotionConfig.launchEnd - DiceMotionConfig.anticipationEnd);
-                scale = _lerpDouble(DiceMotionConfig.pressScale, DiceMotionConfig.launchScale, subT);
+                final subT =
+                    (rollT - DiceMotionConfig.anticipationEnd) /
+                    (DiceMotionConfig.launchEnd -
+                        DiceMotionConfig.anticipationEnd);
+                scale = _lerpDouble(
+                  DiceMotionConfig.pressScale,
+                  DiceMotionConfig.launchScale,
+                  subT,
+                );
               } else if (rollT < DiceMotionConfig.tumbleEnd) {
-                final subT = (rollT - DiceMotionConfig.launchEnd) /
+                final subT =
+                    (rollT - DiceMotionConfig.launchEnd) /
                     (DiceMotionConfig.tumbleEnd - DiceMotionConfig.launchEnd);
                 scale = _lerpDouble(DiceMotionConfig.launchScale, 1.0, subT);
               } else if (rollT < DiceMotionConfig.landingEnd) {
-                final subT = (rollT - DiceMotionConfig.tumbleEnd) /
+                final subT =
+                    (rollT - DiceMotionConfig.tumbleEnd) /
                     (DiceMotionConfig.landingEnd - DiceMotionConfig.tumbleEnd);
                 final bouncePhase = math.sin(subT * math.pi * 2);
                 scale = 1.0 + (bouncePhase * 0.035);
               } else {
-                final subT = (rollT - DiceMotionConfig.landingEnd) /
+                final subT =
+                    (rollT - DiceMotionConfig.landingEnd) /
                     (DiceMotionConfig.settleEnd - DiceMotionConfig.landingEnd);
                 final settlePhase = math.sin(subT * math.pi * 2);
                 scale = 1.0 + (settlePhase * 0.012);
@@ -287,17 +317,22 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
             double translateY = pressT * DiceMotionConfig.pressTranslateY;
             if (!reducedMotion && _rollController.isAnimating) {
               if (rollT < DiceMotionConfig.anticipationEnd) {
-                translateY = DiceMotionConfig.pressTranslateY * (rollT / DiceMotionConfig.anticipationEnd);
+                translateY =
+                    DiceMotionConfig.pressTranslateY *
+                    (rollT / DiceMotionConfig.anticipationEnd);
               } else if (rollT < DiceMotionConfig.launchEnd) {
-                final subT = (rollT - DiceMotionConfig.anticipationEnd) /
-                    (DiceMotionConfig.launchEnd - DiceMotionConfig.anticipationEnd);
+                final subT =
+                    (rollT - DiceMotionConfig.anticipationEnd) /
+                    (DiceMotionConfig.launchEnd -
+                        DiceMotionConfig.anticipationEnd);
                 translateY = _lerpDouble(
                   DiceMotionConfig.pressTranslateY,
                   DiceMotionConfig.launchPeakElevationY,
                   Curves.easeOutQuad.transform(subT),
                 );
               } else if (rollT < DiceMotionConfig.tumbleEnd) {
-                final subT = (rollT - DiceMotionConfig.launchEnd) /
+                final subT =
+                    (rollT - DiceMotionConfig.launchEnd) /
                     (DiceMotionConfig.tumbleEnd - DiceMotionConfig.launchEnd);
                 translateY = _lerpDouble(
                   DiceMotionConfig.launchPeakElevationY,
@@ -305,13 +340,16 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
                   Curves.easeInQuad.transform(subT),
                 );
               } else if (rollT < DiceMotionConfig.landingEnd) {
-                final subT = (rollT - DiceMotionConfig.tumbleEnd) /
+                final subT =
+                    (rollT - DiceMotionConfig.tumbleEnd) /
                     (DiceMotionConfig.landingEnd - DiceMotionConfig.tumbleEnd);
                 translateY = -5.0 * math.sin(subT * math.pi);
               } else {
                 translateY = 0.0;
               }
-            } else if (!reducedMotion && !_rollController.isAnimating && pressT == 0) {
+            } else if (!reducedMotion &&
+                !_rollController.isAnimating &&
+                pressT == 0) {
               final idlePhase = math.sin(_idleController.value * math.pi * 2);
               translateY = -1.8 * idlePhase;
             }
@@ -324,21 +362,51 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
 
             if (!reducedMotion && _rollController.isAnimating) {
               if (rollT < DiceMotionConfig.launchEnd) {
-                final subT = (rollT / DiceMotionConfig.launchEnd).clamp(0.0, 1.0);
-                shadowScale = _lerpDouble(DiceMotionConfig.shadowIdleScale, DiceMotionConfig.shadowLaunchScale, subT);
-                shadowOpacity = _lerpDouble(shadowOpacity, DiceMotionConfig.shadowLaunchOpacity, subT);
+                final subT = (rollT / DiceMotionConfig.launchEnd).clamp(
+                  0.0,
+                  1.0,
+                );
+                shadowScale = _lerpDouble(
+                  DiceMotionConfig.shadowIdleScale,
+                  DiceMotionConfig.shadowLaunchScale,
+                  subT,
+                );
+                shadowOpacity = _lerpDouble(
+                  shadowOpacity,
+                  DiceMotionConfig.shadowLaunchOpacity,
+                  subT,
+                );
               } else if (rollT < DiceMotionConfig.tumbleEnd) {
-                final subT = ((rollT - DiceMotionConfig.launchEnd) /
-                        (DiceMotionConfig.tumbleEnd - DiceMotionConfig.launchEnd))
-                    .clamp(0.0, 1.0);
-                shadowScale = _lerpDouble(DiceMotionConfig.shadowLaunchScale, DiceMotionConfig.shadowLandingScale, subT);
-                shadowOpacity = _lerpDouble(DiceMotionConfig.shadowLaunchOpacity, DiceMotionConfig.shadowLandingOpacity, subT);
+                final subT =
+                    ((rollT - DiceMotionConfig.launchEnd) /
+                            (DiceMotionConfig.tumbleEnd -
+                                DiceMotionConfig.launchEnd))
+                        .clamp(0.0, 1.0);
+                shadowScale = _lerpDouble(
+                  DiceMotionConfig.shadowLaunchScale,
+                  DiceMotionConfig.shadowLandingScale,
+                  subT,
+                );
+                shadowOpacity = _lerpDouble(
+                  DiceMotionConfig.shadowLaunchOpacity,
+                  DiceMotionConfig.shadowLandingOpacity,
+                  subT,
+                );
               } else {
-                final subT = ((rollT - DiceMotionConfig.tumbleEnd) /
-                        (1.0 - DiceMotionConfig.tumbleEnd))
-                    .clamp(0.0, 1.0);
-                shadowScale = _lerpDouble(DiceMotionConfig.shadowLandingScale, DiceMotionConfig.shadowIdleScale, subT);
-                shadowOpacity = _lerpDouble(DiceMotionConfig.shadowLandingOpacity, DiceMotionConfig.shadowIdleOpacity, subT);
+                final subT =
+                    ((rollT - DiceMotionConfig.tumbleEnd) /
+                            (1.0 - DiceMotionConfig.tumbleEnd))
+                        .clamp(0.0, 1.0);
+                shadowScale = _lerpDouble(
+                  DiceMotionConfig.shadowLandingScale,
+                  DiceMotionConfig.shadowIdleScale,
+                  subT,
+                );
+                shadowOpacity = _lerpDouble(
+                  DiceMotionConfig.shadowLandingOpacity,
+                  DiceMotionConfig.shadowIdleOpacity,
+                  subT,
+                );
               }
             }
 
@@ -365,7 +433,11 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
                             height: dieSize * 0.28,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(
-                                  Radius.elliptical(dieSize * 0.44, dieSize * 0.14)),
+                                Radius.elliptical(
+                                  dieSize * 0.44,
+                                  dieSize * 0.14,
+                                ),
+                              ),
                               gradient: RadialGradient(
                                 colors: [
                                   Colors.black.withValues(alpha: 0.65),
@@ -386,8 +458,17 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
                       child: Transform.scale(
                         scale: scale,
                         child: widget.diceType == DiceType.d6
-                            ? _build3DCube(dieSize, halfExtent, effectiveStyle, isDarkMode)
-                            : _buildPolyhedralDie(dieSize, effectiveStyle, isDarkMode),
+                            ? _build3DCube(
+                                dieSize,
+                                halfExtent,
+                                effectiveStyle,
+                                isDarkMode,
+                              )
+                            : _buildPolyhedralDie(
+                                dieSize,
+                                effectiveStyle,
+                                isDarkMode,
+                              ),
                       ),
                     ),
                   ],
@@ -435,11 +516,7 @@ class _PlayMateDiceState extends State<PlayMateDice> with TickerProviderStateMix
     );
   }
 
-  Widget _buildPolyhedralDie(
-    double dieSize,
-    DiceStyle style,
-    bool isDarkMode,
-  ) {
+  Widget _buildPolyhedralDie(double dieSize, DiceStyle style, bool isDarkMode) {
     final double radius = dieSize * 0.22;
     return Container(
       width: dieSize,

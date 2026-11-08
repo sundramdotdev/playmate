@@ -9,11 +9,14 @@ class ExternalLinks {
   static const String githubUrl = 'https://github.com/sundramdotdev';
   static const String linkedinUrl = 'https://linkedin.com/in/sundramdotdev';
   static const String websiteUrl = 'https://www.sundramdotdev.xyz';
-  static const String portfolioFallbackUrl = 'https://sundramdotdev-portfolio.vercel.app';
-  static const String instagramUrl = 'https://www.instagram.com/devsundram_?stkn=dXBva2IwMzZxbHY1';
+  static const String portfolioFallbackUrl =
+      'https://sundramdotdev-portfolio.vercel.app';
+  static const String instagramUrl =
+      'https://www.instagram.com/devsundram_?stkn=dXBva2IwMzZxbHY1';
 
   // Project Repositories & Resources
-  static const String repositoryUrl = 'https://github.com/sundramdotdev/playmate';
+  static const String repositoryUrl =
+      'https://github.com/sundramdotdev/playmate';
   static const String supportEmail = 'support@playmateapp.com';
 
   /// Launches a verified external URL in the default system browser or native application.
@@ -26,10 +29,7 @@ class ExternalLinks {
       );
       if (launched) return true;
 
-      return await launchUrl(
-        uri,
-        mode: LaunchMode.platformDefault,
-      );
+      return await launchUrl(uri, mode: LaunchMode.platformDefault);
     } catch (e) {
       debugPrint('Failed to open external link: $urlString ($e)');
       try {

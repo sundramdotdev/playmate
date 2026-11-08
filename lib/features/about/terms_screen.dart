@@ -11,9 +11,7 @@ class TermsScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Terms & Conditions'),
-      ),
+      appBar: AppBar(title: const Text('Terms & Conditions')),
       body: SafeArea(
         child: ResponsiveLayout(
           mobile: SingleChildScrollView(
@@ -98,9 +96,7 @@ class TermsScreen extends StatelessWidget {
           Linkify(
             onOpen: (link) => openExternalUrl(link.url),
             text: body,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              height: 1.5,
-            ),
+            style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
             linkStyle: TextStyle(
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,

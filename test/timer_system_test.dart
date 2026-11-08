@@ -30,21 +30,36 @@ void main() {
   group('TimeFormatter Unit Tests', () {
     test('formatMmSs formats MM:SS and HH:MM:SS accurately', () {
       expect(TimeFormatter.formatMmSs(Duration.zero), equals('00:00'));
-      expect(TimeFormatter.formatMmSs(const Duration(seconds: 45)), equals('00:45'));
-      expect(TimeFormatter.formatMmSs(const Duration(minutes: 5, seconds: 9)), equals('05:09'));
-      expect(TimeFormatter.formatMmSs(const Duration(hours: 1, minutes: 2, seconds: 3)), equals('1:02:03'));
+      expect(
+        TimeFormatter.formatMmSs(const Duration(seconds: 45)),
+        equals('00:45'),
+      );
+      expect(
+        TimeFormatter.formatMmSs(const Duration(minutes: 5, seconds: 9)),
+        equals('05:09'),
+      );
+      expect(
+        TimeFormatter.formatMmSs(
+          const Duration(hours: 1, minutes: 2, seconds: 3),
+        ),
+        equals('1:02:03'),
+      );
     });
 
     test('formatStopwatch includes centiseconds', () {
       expect(
-        TimeFormatter.formatStopwatch(const Duration(minutes: 1, seconds: 23, milliseconds: 450)),
+        TimeFormatter.formatStopwatch(
+          const Duration(minutes: 1, seconds: 23, milliseconds: 450),
+        ),
         equals('01:23.45'),
       );
     });
 
     test('formatChess shows tenths when under 10 seconds', () {
       expect(
-        TimeFormatter.formatChess(const Duration(seconds: 7, milliseconds: 400)),
+        TimeFormatter.formatChess(
+          const Duration(seconds: 7, milliseconds: 400),
+        ),
         equals('7.4s'),
       );
       expect(
@@ -75,7 +90,10 @@ void main() {
 
     test('Initial mode is Countdown at 5 minutes', () {
       expect(notifier.state.mode, equals(TimerMode.countdown));
-      expect(notifier.state.countdownRemaining, equals(const Duration(minutes: 5)));
+      expect(
+        notifier.state.countdownRemaining,
+        equals(const Duration(minutes: 5)),
+      );
       expect(notifier.state.isRunning, isFalse);
     });
 
@@ -89,14 +107,20 @@ void main() {
       notifier.stop();
 
       expect(notifier.state.isRunning, isFalse);
-      expect(notifier.state.countdownRemaining, equals(const Duration(seconds: 45)));
+      expect(
+        notifier.state.countdownRemaining,
+        equals(const Duration(seconds: 45)),
+      );
 
       // Resume and advance another 10 seconds
       notifier.start();
       timeSource.advance(const Duration(seconds: 10));
       notifier.stop();
 
-      expect(notifier.state.countdownRemaining, equals(const Duration(seconds: 35)));
+      expect(
+        notifier.state.countdownRemaining,
+        equals(const Duration(seconds: 35)),
+      );
     });
 
     test('Countdown: Reset restores initial duration', () {
@@ -105,9 +129,15 @@ void main() {
       timeSource.advance(const Duration(seconds: 30));
       notifier.stop();
 
-      expect(notifier.state.countdownRemaining, equals(const Duration(seconds: 90)));
+      expect(
+        notifier.state.countdownRemaining,
+        equals(const Duration(seconds: 90)),
+      );
       notifier.reset();
-      expect(notifier.state.countdownRemaining, equals(const Duration(minutes: 2)));
+      expect(
+        notifier.state.countdownRemaining,
+        equals(const Duration(minutes: 2)),
+      );
     });
 
     test('Stopwatch: Elapsed time accumulation and lap recording', () {
@@ -116,7 +146,10 @@ void main() {
 
       timeSource.advance(const Duration(seconds: 10, milliseconds: 500));
       notifier.stop();
-      expect(notifier.state.stopwatchElapsed, equals(const Duration(seconds: 10, milliseconds: 500)));
+      expect(
+        notifier.state.stopwatchElapsed,
+        equals(const Duration(seconds: 10, milliseconds: 500)),
+      );
 
       // Record lap while running
       notifier.start();
@@ -125,15 +158,24 @@ void main() {
 
       expect(notifier.state.stopwatchLaps.length, equals(1));
       expect(notifier.state.stopwatchLaps.first.lapNumber, equals(1));
-      expect(notifier.state.stopwatchLaps.first.totalTime, equals(const Duration(seconds: 15, milliseconds: 500)));
-      expect(notifier.state.stopwatchLaps.first.splitTime, equals(const Duration(seconds: 15, milliseconds: 500)));
+      expect(
+        notifier.state.stopwatchLaps.first.totalTime,
+        equals(const Duration(seconds: 15, milliseconds: 500)),
+      );
+      expect(
+        notifier.state.stopwatchLaps.first.splitTime,
+        equals(const Duration(seconds: 15, milliseconds: 500)),
+      );
 
       timeSource.advance(const Duration(seconds: 4));
       notifier.recordStopwatchLap();
 
       expect(notifier.state.stopwatchLaps.length, equals(2));
       expect(notifier.state.stopwatchLaps.first.lapNumber, equals(2));
-      expect(notifier.state.stopwatchLaps.first.splitTime, equals(const Duration(seconds: 4)));
+      expect(
+        notifier.state.stopwatchLaps.first.splitTime,
+        equals(const Duration(seconds: 4)),
+      );
     });
 
     test('Turn Timer: Advances players and increments round on loop', () {
@@ -146,17 +188,26 @@ void main() {
         ],
       );
 
-      expect(notifier.state.turnPlayers[notifier.state.activePlayerIndex].name, equals('Alice'));
+      expect(
+        notifier.state.turnPlayers[notifier.state.activePlayerIndex].name,
+        equals('Alice'),
+      );
       expect(notifier.state.currentTurnRound, equals(1));
 
       // Advance turn to Bob
       notifier.advanceTurn();
-      expect(notifier.state.turnPlayers[notifier.state.activePlayerIndex].name, equals('Bob'));
+      expect(
+        notifier.state.turnPlayers[notifier.state.activePlayerIndex].name,
+        equals('Bob'),
+      );
       expect(notifier.state.currentTurnRound, equals(1));
 
       // Advance turn back to Alice (New round)
       notifier.advanceTurn();
-      expect(notifier.state.turnPlayers[notifier.state.activePlayerIndex].name, equals('Alice'));
+      expect(
+        notifier.state.turnPlayers[notifier.state.activePlayerIndex].name,
+        equals('Alice'),
+      );
       expect(notifier.state.currentTurnRound, equals(2));
     });
 
@@ -177,7 +228,10 @@ void main() {
       expect(notifier.state.isPlayerATurn, isFalse);
       expect(notifier.state.chessPlayerAMoves, equals(1));
       // Remaining = 3m - 10s + 2s inc = 2m 52s = 172s
-      expect(notifier.state.chessPlayerARemaining, equals(const Duration(seconds: 172)));
+      expect(
+        notifier.state.chessPlayerARemaining,
+        equals(const Duration(seconds: 172)),
+      );
 
       // Player B thinks for 5 seconds and moves
       timeSource.advance(const Duration(seconds: 5));
@@ -186,16 +240,21 @@ void main() {
       expect(notifier.state.isPlayerATurn, isTrue);
       expect(notifier.state.chessPlayerBMoves, equals(1));
       // Remaining = 3m - 5s + 2s inc = 2m 57s = 177s
-      expect(notifier.state.chessPlayerBRemaining, equals(const Duration(seconds: 177)));
+      expect(
+        notifier.state.chessPlayerBRemaining,
+        equals(const Duration(seconds: 177)),
+      );
     });
 
     test('Round Timer: Work and rest transitions', () {
       notifier.setMode(TimerMode.timer);
-      notifier.configureRoundTimer(const RoundTimerConfig(
-        workDuration: Duration(minutes: 1),
-        restDuration: Duration(seconds: 15),
-        totalRounds: 2,
-      ));
+      notifier.configureRoundTimer(
+        const RoundTimerConfig(
+          workDuration: Duration(minutes: 1),
+          restDuration: Duration(seconds: 15),
+          totalRounds: 2,
+        ),
+      );
 
       expect(notifier.state.currentRound, equals(1));
       expect(notifier.state.intervalPhase, equals(IntervalPhase.work));
@@ -229,14 +288,13 @@ void main() {
       expect(selected, equals(TimerMode.stopwatch));
     });
 
-    testWidgets('TimeDisplay renders tabular digits without error', (tester) async {
+    testWidgets('TimeDisplay renders tabular digits without error', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: TimeDisplay(
-              formattedTime: '05:00',
-              subtitle: 'Ready',
-            ),
+            body: TimeDisplay(formattedTime: '05:00', subtitle: 'Ready'),
           ),
         ),
       );
@@ -245,17 +303,25 @@ void main() {
       expect(find.text('Ready'), findsOneWidget);
     });
 
-    testWidgets('LapList renders list of laps with split calculations', (tester) async {
+    testWidgets('LapList renders list of laps with split calculations', (
+      tester,
+    ) async {
       const laps = [
-        StopwatchLap(lapNumber: 2, splitTime: Duration(seconds: 4), totalTime: Duration(seconds: 14)),
-        StopwatchLap(lapNumber: 1, splitTime: Duration(seconds: 10), totalTime: Duration(seconds: 10)),
+        StopwatchLap(
+          lapNumber: 2,
+          splitTime: Duration(seconds: 4),
+          totalTime: Duration(seconds: 14),
+        ),
+        StopwatchLap(
+          lapNumber: 1,
+          splitTime: Duration(seconds: 10),
+          totalTime: Duration(seconds: 10),
+        ),
       ];
 
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: LapList(laps: laps),
-          ),
+          home: Scaffold(body: LapList(laps: laps)),
         ),
       );
 
@@ -263,7 +329,9 @@ void main() {
       expect(find.text('Lap 01'), findsOneWidget);
     });
 
-    testWidgets('TimerControls renders Start, Pause, and Reset', (tester) async {
+    testWidgets('TimerControls renders Start, Pause, and Reset', (
+      tester,
+    ) async {
       bool resetPressed = false;
       bool startPressed = false;
 
@@ -295,7 +363,9 @@ void main() {
     final testWidths = [320.0, 360.0, 390.0, 412.0, 768.0, 1024.0];
 
     for (final width in testWidths) {
-      testWidgets('TimerScreen renders without overflow at ${width}px width', (tester) async {
+      testWidgets('TimerScreen renders without overflow at ${width}px width', (
+        tester,
+      ) async {
         tester.view.physicalSize = Size(width, 800);
         tester.view.devicePixelRatio = 1.0;
         addTearDown(tester.view.resetPhysicalSize);
@@ -311,13 +381,19 @@ void main() {
         );
 
         await tester.pump();
-        expect(tester.takeException(), isNull, reason: 'No exception or overflow at width $width');
+        expect(
+          tester.takeException(),
+          isNull,
+          reason: 'No exception or overflow at width $width',
+        );
         expect(find.text('Timers'), findsOneWidget);
         expect(find.byType(TimerModeSelector), findsOneWidget);
       });
     }
 
-    testWidgets('TimerScreen switches between all 5 modes without error', (tester) async {
+    testWidgets('TimerScreen switches between all 5 modes without error', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         ProviderScope(
           child: MaterialApp(

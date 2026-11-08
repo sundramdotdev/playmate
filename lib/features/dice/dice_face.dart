@@ -84,13 +84,17 @@ class DiceFace extends StatelessWidget {
         boxShadow: [
           // Subtle inner face bevel and chamfer rim
           BoxShadow(
-            color: style.highlightColor.withValues(alpha: 0.35 * lightIntensity),
+            color: style.highlightColor.withValues(
+              alpha: 0.35 * lightIntensity,
+            ),
             offset: const Offset(-1.2, -1.2),
             blurRadius: 1.5,
             spreadRadius: 0.0,
           ),
           BoxShadow(
-            color: style.shadowEdgeColor.withValues(alpha: 0.25 * lightIntensity),
+            color: style.shadowEdgeColor.withValues(
+              alpha: 0.25 * lightIntensity,
+            ),
             offset: const Offset(1.5, 1.5),
             blurRadius: 2.0,
             spreadRadius: 0.0,

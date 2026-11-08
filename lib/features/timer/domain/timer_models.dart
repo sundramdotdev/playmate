@@ -1,13 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 /// Supported timing modes in PlayMate
-enum TimerMode {
-  countdown,
-  timer,
-  stopwatch,
-  turn,
-  chess,
-}
+enum TimerMode { countdown, timer, stopwatch, turn, chess }
 
 extension TimerModeDetails on TimerMode {
   String get displayName {
@@ -55,24 +49,20 @@ class StopwatchLap {
   });
 
   Map<String, dynamic> toJson() => {
-        'lapNumber': lapNumber,
-        'splitTimeMs': splitTime.inMilliseconds,
-        'totalTimeMs': totalTime.inMilliseconds,
-      };
+    'lapNumber': lapNumber,
+    'splitTimeMs': splitTime.inMilliseconds,
+    'totalTimeMs': totalTime.inMilliseconds,
+  };
 
   factory StopwatchLap.fromJson(Map<String, dynamic> json) => StopwatchLap(
-        lapNumber: json['lapNumber'] as int,
-        splitTime: Duration(milliseconds: json['splitTimeMs'] as int),
-        totalTime: Duration(milliseconds: json['totalTimeMs'] as int),
-      );
+    lapNumber: json['lapNumber'] as int,
+    splitTime: Duration(milliseconds: json['splitTimeMs'] as int),
+    totalTime: Duration(milliseconds: json['totalTimeMs'] as int),
+  );
 }
 
 /// Interval phase for General / Round Timer.
-enum IntervalPhase {
-  work,
-  rest,
-  complete,
-}
+enum IntervalPhase { work, rest, complete }
 
 /// Config for Round / Interval Timer.
 @immutable
@@ -106,19 +96,10 @@ class TurnPlayer {
   final String id;
   final String name;
 
-  const TurnPlayer({
-    required this.id,
-    required this.name,
-  });
+  const TurnPlayer({required this.id, required this.name});
 
-  TurnPlayer copyWith({
-    String? id,
-    String? name,
-  }) {
-    return TurnPlayer(
-      id: id ?? this.id,
-      name: name ?? this.name,
-    );
+  TurnPlayer copyWith({String? id, String? name}) {
+    return TurnPlayer(id: id ?? this.id, name: name ?? this.name);
   }
 }
 
@@ -170,4 +151,3 @@ class ChessTimeControlPreset {
     ),
   ];
 }
-

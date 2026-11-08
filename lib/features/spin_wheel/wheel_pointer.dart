@@ -61,7 +61,9 @@ class _PointerPainter extends CustomPainter {
     canvas.drawPath(path.shift(const Offset(0, 2)), shadowPaint);
 
     // 2. Base metallic body
-    final Color bodyColor = isDarkMode ? const Color(0xFF2E3036) : const Color(0xFFF3F0E8);
+    final Color bodyColor = isDarkMode
+        ? const Color(0xFF2E3036)
+        : const Color(0xFFF3F0E8);
     final Paint bodyPaint = Paint()
       ..color = bodyColor
       ..style = PaintingStyle.fill;
@@ -76,7 +78,9 @@ class _PointerPainter extends CustomPainter {
 
     // 4. Center indicator ridge line
     final Paint ridgePaint = Paint()
-      ..color = isDarkMode ? Colors.white.withValues(alpha: 0.25) : Colors.black.withValues(alpha: 0.2)
+      ..color = isDarkMode
+          ? Colors.white.withValues(alpha: 0.25)
+          : Colors.black.withValues(alpha: 0.2)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0;
     canvas.drawLine(Offset(w * 0.5, 0), Offset(w * 0.5, h * 0.9), ridgePaint);
@@ -90,7 +94,11 @@ class _PointerPainter extends CustomPainter {
     final Paint studDotPaint = Paint()
       ..color = Colors.white.withValues(alpha: 0.8)
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(Offset(w * 0.5 - 0.5, h * 0.16 - 0.5), w * 0.04, studDotPaint);
+    canvas.drawCircle(
+      Offset(w * 0.5 - 0.5, h * 0.16 - 0.5),
+      w * 0.04,
+      studDotPaint,
+    );
   }
 
   @override
@@ -98,4 +106,3 @@ class _PointerPainter extends CustomPainter {
     return oldDelegate.isDarkMode != isDarkMode;
   }
 }
-

@@ -58,7 +58,9 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
             FilledButton(
               onPressed: () {
                 if (_optionController.text.trim().isNotEmpty) {
-                  ref.read(spinWheelProvider.notifier).addOption(_optionController.text);
+                  ref
+                      .read(spinWheelProvider.notifier)
+                      .addOption(_optionController.text);
                   Navigator.pop(ctx);
                 }
               },
@@ -93,7 +95,10 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                     children: [
                       const Text(
                         'Wheel Presets',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.close),
@@ -109,7 +114,9 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                     title: Text(
                       preset.name,
                       style: TextStyle(
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.w500,
                         color: isSelected ? const Color(0xFFC18A42) : null,
                       ),
                     ),
@@ -120,7 +127,10 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                       style: const TextStyle(fontSize: 12),
                     ),
                     trailing: isSelected
-                        ? const Icon(Icons.check_circle, color: Color(0xFFC18A42))
+                        ? const Icon(
+                            Icons.check_circle,
+                            color: Color(0xFFC18A42),
+                          )
                         : null,
                     onTap: () {
                       ref.read(spinWheelProvider.notifier).applyPreset(preset);
@@ -163,12 +173,16 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                           children: [
                             Text(
                               'Edit Options (${wheelState.options.length})',
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Row(
                               children: [
                                 TextButton.icon(
-                                  onPressed: () => _showAddOptionDialog(context),
+                                  onPressed: () =>
+                                      _showAddOptionDialog(context),
                                   icon: const Icon(Icons.add, size: 18),
                                   label: const Text('Add'),
                                 ),
@@ -192,7 +206,9 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                             return ListTile(
                               leading: CircleAvatar(
                                 radius: 14,
-                                backgroundColor: const Color(0xFFC18A42).withValues(alpha: 0.2),
+                                backgroundColor: const Color(
+                                  0xFFC18A42,
+                                ).withValues(alpha: 0.2),
                                 child: Text(
                                   '${index + 1}',
                                   style: const TextStyle(
@@ -206,14 +222,18 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                               trailing: IconButton(
                                 icon: Icon(
                                   Icons.delete_outline,
-                                  color: canDelete ? Colors.red.shade400 : Colors.grey,
+                                  color: canDelete
+                                      ? Colors.red.shade400
+                                      : Colors.grey,
                                 ),
                                 onPressed: canDelete
                                     ? () => ref
-                                        .read(spinWheelProvider.notifier)
-                                        .removeOptionById(option.id)
+                                          .read(spinWheelProvider.notifier)
+                                          .removeOptionById(option.id)
                                     : null,
-                                tooltip: canDelete ? 'Delete option' : 'Minimum 2 options required',
+                                tooltip: canDelete
+                                    ? 'Delete option'
+                                    : 'Minimum 2 options required',
                               ),
                             );
                           },
@@ -242,7 +262,9 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.list_alt),
-            onPressed: wheelState.isSpinning ? null : () => _showEditOptionsSheet(context),
+            onPressed: wheelState.isSpinning
+                ? null
+                : () => _showEditOptionsSheet(context),
             tooltip: 'Options',
           ),
           PopupMenuButton<String>(
@@ -303,7 +325,10 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                       // Responsive Hero Physical Spin Wheel
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          final double wheelSize = _calculateResponsiveWheelSize(constraints.maxWidth);
+                          final double wheelSize =
+                              _calculateResponsiveWheelSize(
+                                constraints.maxWidth,
+                              );
                           return Center(
                             child: PlayMateSpinWheel(
                               options: wheelState.options,
@@ -325,7 +350,11 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
 
                       // Compact Recent History
                       if (wheelState.history.isNotEmpty) ...[
-                        _buildRecentHistorySection(wheelState, theme, isDarkMode),
+                        _buildRecentHistorySection(
+                          wheelState,
+                          theme,
+                          isDarkMode,
+                        ),
                       ],
                     ],
                   ),
@@ -353,7 +382,11 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
     }
   }
 
-  Widget _buildPresetIndicator(SpinWheelState wheelState, ThemeData theme, bool isDarkMode) {
+  Widget _buildPresetIndicator(
+    SpinWheelState wheelState,
+    ThemeData theme,
+    bool isDarkMode,
+  ) {
     final presetName = SpinWheelPreset.builtInPresets
         .firstWhere(
           (p) => p.id == wheelState.activePresetId,
@@ -371,12 +404,16 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
       runSpacing: 6.0,
       children: [
         InkWell(
-          onTap: wheelState.isSpinning ? null : () => _showPresetsBottomSheet(context),
+          onTap: wheelState.isSpinning
+              ? null
+              : () => _showPresetsBottomSheet(context),
           borderRadius: BorderRadius.circular(16),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFF5F5F5),
+              color: isDarkMode
+                  ? const Color(0xFF1E1E1E)
+                  : const Color(0xFFF5F5F5),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: const Color(0xFFC18A42).withValues(alpha: 0.35),
@@ -397,28 +434,42 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                   ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(Icons.arrow_drop_down, size: 16, color: Color(0xFFC18A42)),
+                const Icon(
+                  Icons.arrow_drop_down,
+                  size: 16,
+                  color: Color(0xFFC18A42),
+                ),
               ],
             ),
           ),
         ),
         InkWell(
-          onTap: wheelState.isSpinning ? null : () => _showEditOptionsSheet(context),
+          onTap: wheelState.isSpinning
+              ? null
+              : () => _showEditOptionsSheet(context),
           borderRadius: BorderRadius.circular(16),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFF5F5F5),
+              color: isDarkMode
+                  ? const Color(0xFF1E1E1E)
+                  : const Color(0xFFF5F5F5),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isDarkMode ? const Color(0xFF2C2C2C) : const Color(0xFFE0E0E0),
+                color: isDarkMode
+                    ? const Color(0xFF2C2C2C)
+                    : const Color(0xFFE0E0E0),
                 width: 1.0,
               ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.pie_chart_outline, size: 13, color: theme.colorScheme.secondary),
+                Icon(
+                  Icons.pie_chart_outline,
+                  size: 13,
+                  color: theme.colorScheme.secondary,
+                ),
                 const SizedBox(width: 5),
                 Text(
                   '${wheelState.options.length} options',
@@ -543,23 +594,39 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                   style: OutlinedButton.styleFrom(
                     visualDensity: VisualDensity.compact,
                     side: BorderSide(
-                      color: isDarkMode ? const Color(0xFF383838) : const Color(0xFFD0D0D0),
+                      color: isDarkMode
+                          ? const Color(0xFF383838)
+                          : const Color(0xFFD0D0D0),
                     ),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   onPressed: _triggerSpin,
                   icon: const Icon(Icons.replay, size: 16),
-                  label: const Text('SPIN AGAIN', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  label: const Text(
+                    'SPIN AGAIN',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 if (canRemoveWinner)
                   FilledButton.tonalIcon(
                     style: FilledButton.styleFrom(
                       visualDensity: VisualDensity.compact,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    onPressed: () => ref.read(spinWheelProvider.notifier).removeWinner(),
+                    onPressed: () =>
+                        ref.read(spinWheelProvider.notifier).removeWinner(),
                     icon: const Icon(Icons.remove_circle_outline, size: 16),
-                    label: const Text('REMOVE WINNER', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    label: const Text(
+                      'REMOVE WINNER',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -597,7 +664,8 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
               icon: const Icon(Icons.delete_outline, size: 16),
               visualDensity: VisualDensity.compact,
               tooltip: 'Clear history',
-              onPressed: () => ref.read(spinWheelProvider.notifier).clearHistory(),
+              onPressed: () =>
+                  ref.read(spinWheelProvider.notifier).clearHistory(),
             ),
           ],
         ),
@@ -615,16 +683,25 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
               return Padding(
                 padding: const EdgeInsets.only(right: 6.0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     color: isLatest
-                        ? (isDarkMode ? const Color(0xFF2C2C2E) : const Color(0xFFEBEBEB))
-                        : (isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFF5F5F5)),
+                        ? (isDarkMode
+                              ? const Color(0xFF2C2C2E)
+                              : const Color(0xFFEBEBEB))
+                        : (isDarkMode
+                              ? const Color(0xFF1E1E1E)
+                              : const Color(0xFFF5F5F5)),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: isLatest
                           ? const Color(0xFFC18A42).withValues(alpha: 0.4)
-                          : (isDarkMode ? const Color(0xFF2C2C2C) : const Color(0xFFE0E0E0)),
+                          : (isDarkMode
+                                ? const Color(0xFF2C2C2C)
+                                : const Color(0xFFE0E0E0)),
                       width: 1.0,
                     ),
                   ),
@@ -646,9 +723,13 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
                         record.winnerLabel,
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: isLatest ? FontWeight.bold : FontWeight.w600,
+                          fontWeight: isLatest
+                              ? FontWeight.bold
+                              : FontWeight.w600,
                           color: isLatest
-                              ? (isDarkMode ? Colors.white : const Color(0xFF1A1A1A))
+                              ? (isDarkMode
+                                    ? Colors.white
+                                    : const Color(0xFF1A1A1A))
                               : theme.colorScheme.secondary,
                         ),
                       ),
@@ -668,9 +749,7 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
       padding: const EdgeInsets.all(AppSpacing.m),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        border: Border(
-          top: BorderSide(color: theme.dividerColor, width: 1),
-        ),
+        border: Border(top: BorderSide(color: theme.dividerColor, width: 1)),
       ),
       child: SafeArea(
         top: false,
@@ -681,7 +760,9 @@ class _SpinWheelScreenState extends ConsumerState<SpinWheelScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: theme.colorScheme.primary,
               foregroundColor: theme.colorScheme.onPrimary,
-              disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.5),
+              disabledBackgroundColor: theme.colorScheme.primary.withValues(
+                alpha: 0.5,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),

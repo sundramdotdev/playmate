@@ -40,31 +40,45 @@ void main() {
       expect(CoinOrientation.isHeadsFacing(tailsAngle), isFalse);
     });
 
-    test('calculateTargetFlipAngle lands deterministically on target side for any cycle count', () {
-      for (final targetSide in CoinSide.values) {
-        for (int cycles = 3; cycles <= 8; cycles++) {
-          final targetAngle = CoinOrientation.calculateTargetFlipAngle(
-            currentRx: 0.0,
-            targetSide: targetSide,
-            fullCycles: cycles,
-          );
+    test(
+      'calculateTargetFlipAngle lands deterministically on target side for any cycle count',
+      () {
+        for (final targetSide in CoinSide.values) {
+          for (int cycles = 3; cycles <= 8; cycles++) {
+            final targetAngle = CoinOrientation.calculateTargetFlipAngle(
+              currentRx: 0.0,
+              targetSide: targetSide,
+              fullCycles: cycles,
+            );
 
-          // Verify cosine matches target side
-          final double cosVal = math.cos(targetAngle);
-          if (targetSide == CoinSide.heads) {
-            expect(cosVal, closeTo(1.0, 0.001), reason: 'Heads targetAngle must have cos=1');
-            expect(CoinOrientation.isHeadsFacing(targetAngle), isTrue);
-          } else {
-            expect(cosVal, closeTo(-1.0, 0.001), reason: 'Tails targetAngle must have cos=-1');
-            expect(CoinOrientation.isHeadsFacing(targetAngle), isFalse);
+            // Verify cosine matches target side
+            final double cosVal = math.cos(targetAngle);
+            if (targetSide == CoinSide.heads) {
+              expect(
+                cosVal,
+                closeTo(1.0, 0.001),
+                reason: 'Heads targetAngle must have cos=1',
+              );
+              expect(CoinOrientation.isHeadsFacing(targetAngle), isTrue);
+            } else {
+              expect(
+                cosVal,
+                closeTo(-1.0, 0.001),
+                reason: 'Tails targetAngle must have cos=-1',
+              );
+              expect(CoinOrientation.isHeadsFacing(targetAngle), isFalse);
+            }
           }
         }
-      }
-    });
+      },
+    );
 
     test('Edge visibility reaches 1.0 when edge-on at 90 degrees', () {
       expect(CoinOrientation.getEdgeVisibility(0.0), closeTo(0.0, 0.001));
-      expect(CoinOrientation.getEdgeVisibility(math.pi / 2), closeTo(1.0, 0.001));
+      expect(
+        CoinOrientation.getEdgeVisibility(math.pi / 2),
+        closeTo(1.0, 0.001),
+      );
       expect(CoinOrientation.getEdgeVisibility(math.pi), closeTo(0.0, 0.001));
     });
   });
@@ -90,35 +104,38 @@ void main() {
       expect(state.lastResult, equals(CoinSide.heads));
     });
 
-    test('Toss updates state to target side and records history after completion', () async {
-      final container = ProviderContainer();
-      final future = container.read(coinProvider.notifier).toss();
+    test(
+      'Toss updates state to target side and records history after completion',
+      () async {
+        final container = ProviderContainer();
+        final future = container.read(coinProvider.notifier).toss();
 
-      // Immediately becomes isFlipping: true with non-null target result
-      final flippingState = container.read(coinProvider);
-      expect(flippingState.isFlipping, isTrue);
-      expect(flippingState.lastResult, isNotNull);
+        // Immediately becomes isFlipping: true with non-null target result
+        final flippingState = container.read(coinProvider);
+        expect(flippingState.isFlipping, isTrue);
+        expect(flippingState.lastResult, isNotNull);
 
-      // Duplicate toss while flipping is rejected
-      await container.read(coinProvider.notifier).toss();
+        // Duplicate toss while flipping is rejected
+        await container.read(coinProvider.notifier).toss();
 
-      // Await toss completion
-      await future;
+        // Await toss completion
+        await future;
 
-      final settledState = container.read(coinProvider);
-      expect(settledState.isFlipping, isFalse);
-      expect(settledState.tossHistory.length, equals(1));
-      expect(settledState.totalTosses, equals(1));
-      expect(settledState.tossHistory.first, equals(settledState.lastResult));
+        final settledState = container.read(coinProvider);
+        expect(settledState.isFlipping, isFalse);
+        expect(settledState.tossHistory.length, equals(1));
+        expect(settledState.totalTosses, equals(1));
+        expect(settledState.tossHistory.first, equals(settledState.lastResult));
 
-      if (settledState.lastResult == CoinSide.heads) {
-        expect(settledState.headsCount, equals(1));
-        expect(settledState.tailsCount, equals(0));
-      } else {
-        expect(settledState.headsCount, equals(0));
-        expect(settledState.tailsCount, equals(1));
-      }
-    });
+        if (settledState.lastResult == CoinSide.heads) {
+          expect(settledState.headsCount, equals(1));
+          expect(settledState.tailsCount, equals(0));
+        } else {
+          expect(settledState.headsCount, equals(0));
+          expect(settledState.tailsCount, equals(1));
+        }
+      },
+    );
 
     test('Clear history clears toss history and resets counts', () {
       final container = ProviderContainer();
@@ -131,27 +148,28 @@ void main() {
   });
 
   group('Coin UI Widgets & Semantics', () {
-    testWidgets('CoinFace renders both HEADS and TAILS with PlayMate branding', (tester) async {
-      for (final side in CoinSide.values) {
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Center(
-                child: CoinFace(
-                  side: side,
-                  size: 150,
-                  isDarkMode: false,
+    testWidgets(
+      'CoinFace renders both HEADS and TAILS with PlayMate branding',
+      (tester) async {
+        for (final side in CoinSide.values) {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: CoinFace(side: side, size: 150, isDarkMode: false),
                 ),
               ),
             ),
-          ),
-        );
+          );
 
-        expect(find.byType(CoinFace), findsOneWidget);
-      }
-    });
+          expect(find.byType(CoinFace), findsOneWidget);
+        }
+      },
+    );
 
-    testWidgets('PlayMateCoin renders tactile 3D coin with semantics', (tester) async {
+    testWidgets('PlayMateCoin renders tactile 3D coin with semantics', (
+      tester,
+    ) async {
       bool tossRequested = false;
 
       await tester.pumpWidget(
@@ -183,7 +201,9 @@ void main() {
     final testWidths = [320.0, 360.0, 390.0, 412.0, 768.0, 1024.0];
 
     for (final width in testWidths) {
-      testWidgets('CoinScreen renders without overflow at ${width}px width', (tester) async {
+      testWidgets('CoinScreen renders without overflow at ${width}px width', (
+        tester,
+      ) async {
         tester.view.physicalSize = Size(width, 800);
         tester.view.devicePixelRatio = 1.0;
         addTearDown(tester.view.resetPhysicalSize);

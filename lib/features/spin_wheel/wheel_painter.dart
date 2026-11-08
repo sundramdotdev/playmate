@@ -10,10 +10,7 @@ class WheelPainter extends CustomPainter {
   final List<WheelOption> options;
   final bool isDarkMode;
 
-  const WheelPainter({
-    required this.options,
-    required this.isDarkMode,
-  });
+  const WheelPainter({required this.options, required this.isDarkMode});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -32,7 +29,8 @@ class WheelPainter extends CustomPainter {
     // 1. Draw Sector Bodies
     for (int i = 0; i < count; i++) {
       final double startAngle = SpinWheelMath.getSectorStartAngle(i, count);
-      final Color sectorColor = options[i].customColor ??
+      final Color sectorColor =
+          options[i].customColor ??
           SpinWheelMath.getSegmentColor(i, count, isDarkMode);
 
       final Paint sectorPaint = Paint()
@@ -81,18 +79,22 @@ class WheelPainter extends CustomPainter {
     final double fontSize = count <= 4
         ? 14.0
         : count <= 8
-            ? 12.0
-            : count <= 12
-                ? 10.5
-                : 9.0;
+        ? 12.0
+        : count <= 12
+        ? 10.5
+        : 9.0;
 
     final double maxLabelWidth = innerRadius * 0.48;
 
     for (int i = 0; i < count; i++) {
       final double centerAngle = SpinWheelMath.getSectorCenterAngle(i, count);
-      final Color sectorColor = options[i].customColor ??
+      final Color sectorColor =
+          options[i].customColor ??
           SpinWheelMath.getSegmentColor(i, count, isDarkMode);
-      final Color textColor = SpinWheelMath.getTextColorForSegment(sectorColor, isDarkMode);
+      final Color textColor = SpinWheelMath.getTextColorForSegment(
+        sectorColor,
+        isDarkMode,
+      );
 
       canvas.save();
       canvas.translate(center.dx, center.dy);
@@ -121,18 +123,22 @@ class WheelPainter extends CustomPainter {
 
       // Position text along the radial arm (between center hub and outer rim)
       final double radialOffset = innerRadius * 0.42;
-      textPainter.paint(
-        canvas,
-        Offset(radialOffset, -textPainter.height / 2),
-      );
+      textPainter.paint(canvas, Offset(radialOffset, -textPainter.height / 2));
 
       canvas.restore();
     }
   }
 
-  void _drawOuterRim(Canvas canvas, Offset center, double radius, double innerRadius) {
+  void _drawOuterRim(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    double innerRadius,
+  ) {
     // Rim background stroke
-    final rimColor = isDarkMode ? const Color(0xFF1E1F24) : const Color(0xFF2C2D33);
+    final rimColor = isDarkMode
+        ? const Color(0xFF1E1F24)
+        : const Color(0xFF2C2D33);
     final Paint rimPaint = Paint()
       ..color = rimColor
       ..style = PaintingStyle.stroke
@@ -142,7 +148,9 @@ class WheelPainter extends CustomPainter {
 
     // Subtle outer highlight ring
     final Paint highlightPaint = Paint()
-      ..color = (isDarkMode ? Colors.white : Colors.white).withValues(alpha: isDarkMode ? 0.12 : 0.35)
+      ..color = (isDarkMode ? Colors.white : Colors.white).withValues(
+        alpha: isDarkMode ? 0.12 : 0.35,
+      )
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0;
     canvas.drawCircle(center, radius - 0.5, highlightPaint);
@@ -166,7 +174,8 @@ class WheelPainter extends CustomPainter {
     final double pegDistance = (radius + innerRadius) / 2;
 
     final Paint pegBodyPaint = Paint()
-      ..color = const Color(0xFFC18A42) // Warm bronze stud
+      ..color =
+          const Color(0xFFC18A42) // Warm bronze stud
       ..style = PaintingStyle.fill;
 
     final Paint pegHighlightPaint = Paint()
@@ -201,7 +210,9 @@ class WheelPainter extends CustomPainter {
     canvas.drawCircle(center + const Offset(0, 2), hubRadius, shadowPaint);
 
     // 2. Hub Metallic Body
-    final hubBodyColor = isDarkMode ? const Color(0xFF22242A) : const Color(0xFFF3F0E8);
+    final hubBodyColor = isDarkMode
+        ? const Color(0xFF22242A)
+        : const Color(0xFFF3F0E8);
     final Paint hubPaint = Paint()
       ..color = hubBodyColor
       ..style = PaintingStyle.fill;
@@ -209,14 +220,18 @@ class WheelPainter extends CustomPainter {
 
     // 3. Hub Concentric Engraved Ring
     final Paint engravedRingPaint = Paint()
-      ..color = (isDarkMode ? Colors.white : Colors.black).withValues(alpha: 0.15)
+      ..color = (isDarkMode ? Colors.white : Colors.black).withValues(
+        alpha: 0.15,
+      )
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.2;
     canvas.drawCircle(center, hubRadius * 0.85, engravedRingPaint);
 
     // 4. Hub Outer Chamfer Rim
     final Paint bevelPaint = Paint()
-      ..color = (isDarkMode ? Colors.white : Colors.white).withValues(alpha: isDarkMode ? 0.15 : 0.6)
+      ..color = (isDarkMode ? Colors.white : Colors.white).withValues(
+        alpha: isDarkMode ? 0.15 : 0.6,
+      )
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
     canvas.drawCircle(center, hubRadius - 0.75, bevelPaint);
@@ -249,7 +264,8 @@ class WheelPainter extends CustomPainter {
     path.close();
 
     final Paint markPaint = Paint()
-      ..color = const Color(0xFFC18A42) // Warm Bronze Accent
+      ..color =
+          const Color(0xFFC18A42) // Warm Bronze Accent
       ..style = PaintingStyle.fill;
     canvas.drawPath(path, markPaint);
 
@@ -272,4 +288,3 @@ class WheelPainter extends CustomPainter {
     return false;
   }
 }
-

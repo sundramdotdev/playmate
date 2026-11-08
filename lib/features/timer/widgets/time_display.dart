@@ -38,9 +38,7 @@ class TimeDisplay extends StatelessWidget {
               fontFamily: 'monospace',
               letterSpacing: -1.5,
               color: displayColor,
-              fontFeatures: const [
-                FontFeature.tabularFigures(),
-              ],
+              fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
         ),
@@ -59,4 +57,3 @@ class TimeDisplay extends StatelessWidget {
     );
   }
 }
-

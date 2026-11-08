@@ -9,13 +9,15 @@ class DiceNotifier extends StateNotifier<DiceRollState> {
   final Random _random = Random();
 
   DiceNotifier()
-      : super(DiceRollState(
+    : super(
+        DiceRollState(
           currentRolls: [6],
           diceType: DiceType.d6,
           diceCount: 1,
           isRolling: false,
           rollHistory: [],
-        )) {
+        ),
+      ) {
     _loadHistory();
   }
 
@@ -70,30 +72,26 @@ class DiceNotifier extends StateNotifier<DiceRollState> {
     );
 
     // 2. Publish target result immediately so visual renderer computes target orientation
-    state = state.copyWith(
-      currentRolls: finalRolls,
-      isRolling: true,
-    );
+    state = state.copyWith(currentRolls: finalRolls, isRolling: true);
 
     // 3. Await duration matching physical 3D animation timeline
     await Future.delayed(DiceMotionConfig.rollDuration);
 
     // 4. Update history upon settling
-    final updatedHistory = List<List<int>>.from(state.rollHistory)..insert(0, finalRolls);
+    final updatedHistory = List<List<int>>.from(state.rollHistory)
+      ..insert(0, finalRolls);
     if (updatedHistory.length > 50) {
       updatedHistory.removeLast();
     }
 
-    state = state.copyWith(
-      isRolling: false,
-      rollHistory: updatedHistory,
-    );
+    state = state.copyWith(isRolling: false, rollHistory: updatedHistory);
 
     // Persist history & statistics
     if (StorageService.isBoxOpen(StorageService.statsBoxName)) {
       final box = StorageService.getStatsBox();
       await box.put('dice_history', updatedHistory);
-      final int totalRolls = box.get('total_dice_rolls', defaultValue: 0) as int;
+      final int totalRolls =
+          box.get('total_dice_rolls', defaultValue: 0) as int;
       await box.put('total_dice_rolls', totalRolls + state.diceCount);
     }
 

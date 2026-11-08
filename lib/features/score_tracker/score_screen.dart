@@ -16,7 +16,9 @@ class _ScoreTrackerScreenState extends ConsumerState<ScoreTrackerScreen> {
   final TextEditingController _teamBController = TextEditingController();
 
   void _startMatch() {
-    ref.read(scoreTrackerProvider.notifier).startNewMatch(
+    ref
+        .read(scoreTrackerProvider.notifier)
+        .startNewMatch(
           _matchNameController.text,
           _teamAController.text,
           _teamBController.text,
@@ -44,7 +46,9 @@ class _ScoreTrackerScreenState extends ConsumerState<ScoreTrackerScreen> {
                 IconButton(
                   icon: const Icon(Icons.undo),
                   onPressed: match.scoreHistory.isNotEmpty
-                      ? () => ref.read(scoreTrackerProvider.notifier).undoLastAction()
+                      ? () => ref
+                            .read(scoreTrackerProvider.notifier)
+                            .undoLastAction()
                       : null,
                   tooltip: 'Undo Last Score',
                 ),
@@ -100,10 +104,15 @@ class _ScoreTrackerScreenState extends ConsumerState<ScoreTrackerScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: theme.colorScheme.onPrimary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onPressed: _startMatch,
-              child: const Text('START MATCH', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text(
+                'START MATCH',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
@@ -118,7 +127,9 @@ class _ScoreTrackerScreenState extends ConsumerState<ScoreTrackerScreen> {
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.m),
           child: Text(
             match.matchName,
-            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         Expanded(
@@ -129,8 +140,12 @@ class _ScoreTrackerScreenState extends ConsumerState<ScoreTrackerScreen> {
                 child: _buildTeamScoreButton(
                   name: match.teamAName,
                   score: match.teamAScore,
-                  onTap: () => ref.read(scoreTrackerProvider.notifier).incrementScore(true),
-                  onLongPress: () => ref.read(scoreTrackerProvider.notifier).decrementScore(true),
+                  onTap: () => ref
+                      .read(scoreTrackerProvider.notifier)
+                      .incrementScore(true),
+                  onLongPress: () => ref
+                      .read(scoreTrackerProvider.notifier)
+                      .decrementScore(true),
                   theme: theme,
                   isTeamA: true,
                 ),
@@ -141,8 +156,12 @@ class _ScoreTrackerScreenState extends ConsumerState<ScoreTrackerScreen> {
                 child: _buildTeamScoreButton(
                   name: match.teamBName,
                   score: match.teamBScore,
-                  onTap: () => ref.read(scoreTrackerProvider.notifier).incrementScore(false),
-                  onLongPress: () => ref.read(scoreTrackerProvider.notifier).decrementScore(false),
+                  onTap: () => ref
+                      .read(scoreTrackerProvider.notifier)
+                      .incrementScore(false),
+                  onLongPress: () => ref
+                      .read(scoreTrackerProvider.notifier)
+                      .decrementScore(false),
                   theme: theme,
                   isTeamA: false,
                 ),
@@ -157,7 +176,8 @@ class _ScoreTrackerScreenState extends ConsumerState<ScoreTrackerScreen> {
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () => ref.read(scoreTrackerProvider.notifier).reset(),
+                  onPressed: () =>
+                      ref.read(scoreTrackerProvider.notifier).reset(),
                   child: const Text('CANCEL'),
                 ),
               ),
@@ -169,10 +189,14 @@ class _ScoreTrackerScreenState extends ConsumerState<ScoreTrackerScreen> {
                     foregroundColor: theme.colorScheme.onPrimary,
                   ),
                   onPressed: () async {
-                    await ref.read(scoreTrackerProvider.notifier).endAndSaveMatch();
+                    await ref
+                        .read(scoreTrackerProvider.notifier)
+                        .endAndSaveMatch();
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Match saved successfully!')),
+                      const SnackBar(
+                        content: Text('Match saved successfully!'),
+                      ),
                     );
                     ref.read(scoreTrackerProvider.notifier).reset();
                   },

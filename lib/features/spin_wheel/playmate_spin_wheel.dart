@@ -71,7 +71,8 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
     );
 
     // Guard idle animation loop during automated testing to avoid pumpAndSettle timeout
-    final isTesting = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
+    final isTesting =
+        !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
     if (!isTesting) {
       _idleController.repeat();
     }
@@ -93,7 +94,9 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
   void didUpdateWidget(covariant PlayMateSpinWheel oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.isSpinning && !oldWidget.isSpinning && !_spinController.isAnimating) {
+    if (widget.isSpinning &&
+        !oldWidget.isSpinning &&
+        !_spinController.isAnimating) {
       _startSpinSequence();
     }
   }
@@ -107,7 +110,9 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
     // Determine target index
     int winningIndex = 0;
     if (widget.targetWinner != null) {
-      final found = widget.options.indexWhere((o) => o.id == widget.targetWinner!.id);
+      final found = widget.options.indexWhere(
+        (o) => o.id == widget.targetWinner!.id,
+      );
       winningIndex = found >= 0 ? found : 0;
     }
 
@@ -129,7 +134,8 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
     final double t = _spinController.value;
     final double curvedT = SpinWheelMotionConfig.spinCurve.transform(t);
 
-    final double rotation = _startRotation + (_targetRotation - _startRotation) * curvedT;
+    final double rotation =
+        _startRotation + (_targetRotation - _startRotation) * curvedT;
     final int count = widget.options.length;
 
     if (count > 0) {
@@ -150,7 +156,8 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
       // Pointer deflection: deflects in rotation direction when near peg boundary (fraction < 0.25)
       if (pegFraction < 0.25) {
         final double factor = math.sin((pegFraction / 0.25) * math.pi);
-        _pointerDeflection = factor * SpinWheelMotionConfig.pointerMaxDeflection;
+        _pointerDeflection =
+            factor * SpinWheelMotionConfig.pointerMaxDeflection;
       } else {
         _pointerDeflection = 0.0;
       }
@@ -203,13 +210,14 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final reducedMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reducedMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
 
     final String semanticsLabel = widget.isSpinning
         ? 'Spin wheel is spinning'
         : widget.targetWinner != null
-            ? 'Spin wheel winner is ${widget.targetWinner!.label}. Tap to spin again'
-            : 'Spin wheel ready with ${widget.options.length} options. Tap to spin';
+        ? 'Spin wheel winner is ${widget.targetWinner!.label}. Tap to spin again'
+        : 'Spin wheel ready with ${widget.options.length} options. Tap to spin';
 
     return Semantics(
       label: semanticsLabel,
@@ -220,19 +228,25 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
         onTapUp: _onTapUp,
         onTapCancel: _onTapCancel,
         child: AnimatedBuilder(
-          animation: Listenable.merge([_spinController, _idleController, _pressController]),
+          animation: Listenable.merge([
+            _spinController,
+            _idleController,
+            _pressController,
+          ]),
           builder: (context, _) {
             final double pressT = _pressController.value;
             final double spinT = _spinController.value;
 
             // Physical tactile scale: compression on press, gentle breathing during spin
-            double scale = 1.0 - (pressT * (1.0 - SpinWheelMotionConfig.pressScale));
+            double scale =
+                1.0 - (pressT * (1.0 - SpinWheelMotionConfig.pressScale));
             if (!reducedMotion && _spinController.isAnimating) {
               if (spinT < SpinWheelMotionConfig.accelerationEnd) {
                 final subT = spinT / SpinWheelMotionConfig.accelerationEnd;
                 scale = 1.0 + (subT * 0.02);
               } else if (spinT > SpinWheelMotionConfig.decelerationEnd) {
-                final subT = (spinT - SpinWheelMotionConfig.decelerationEnd) /
+                final subT =
+                    (spinT - SpinWheelMotionConfig.decelerationEnd) /
                     (1.0 - SpinWheelMotionConfig.decelerationEnd);
                 scale = 1.02 - (subT * 0.02);
               } else {
@@ -252,7 +266,9 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
               scale: scale,
               child: SizedBox(
                 width: wheelSize,
-                height: wheelSize + 24.0, // extra clearance for top pointer & contact shadow
+                height:
+                    wheelSize +
+                    24.0, // extra clearance for top pointer & contact shadow
                 child: Stack(
                   clipBehavior: Clip.none,
                   alignment: Alignment.center,
@@ -261,20 +277,31 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
                     Positioned(
                       bottom: 4.0,
                       child: Container(
-                        width: wheelSize * SpinWheelMotionConfig.shadowIdleScale,
+                        width:
+                            wheelSize * SpinWheelMotionConfig.shadowIdleScale,
                         height: wheelSize * 0.14,
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.all(Radius.elliptical(wheelSize * 0.5, wheelSize * 0.07)),
+                          borderRadius: BorderRadius.all(
+                            Radius.elliptical(
+                              wheelSize * 0.5,
+                              wheelSize * 0.07,
+                            ),
+                          ),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withValues(
                                 alpha: isDarkMode
-                                    ? SpinWheelMotionConfig.shadowIdleOpacity * 1.6
+                                    ? SpinWheelMotionConfig.shadowIdleOpacity *
+                                          1.6
                                     : SpinWheelMotionConfig.shadowIdleOpacity,
                               ),
-                              blurRadius: _spinController.isAnimating ? 18.0 : 12.0,
-                              spreadRadius: _spinController.isAnimating ? 4.0 : 2.0,
+                              blurRadius: _spinController.isAnimating
+                                  ? 18.0
+                                  : 12.0,
+                              spreadRadius: _spinController.isAnimating
+                                  ? 4.0
+                                  : 2.0,
                             ),
                           ],
                         ),
@@ -318,4 +345,3 @@ class _PlayMateSpinWheelState extends State<PlayMateSpinWheel>
     );
   }
 }
-
